@@ -1,0 +1,24 @@
+<div class="w-full max-w-md bg-white rounded-xl shadow-2xl p-8 text-center">
+  <h1 class="text-3xl font-bold text-gray-800 mb-2">Your Lock Screen is Ready!</h1>
+  <p class="text-gray-600 mb-8">Payment successful! Download your unique QR code wallpaper below.</p>
+
+  <!-- Final Image Preview Area -->
+  <div class="relative w-full max-w-xs mx-auto mb-8 rounded-lg overflow-hidden shadow-lg border border-gray-200" style="aspect-ratio: 9 / 19.5;">
+    <!-- Placeholder for the final composited image -->
+    <img src={~p"/images/mockups/placeholder-final.png"} alt="Final QR Lock Screen Image" class="absolute inset-0 w-full h-full object-cover">
+  </div>
+
+  <div class="space-y-4">
+    <.link href="#" download="qr-lock-screen.png"
+      class="block w-full text-center py-4 px-6 border border-transparent rounded-lg shadow-lg text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-offset-2 transition duration-150 ease-in-out transform hover:-translate-y-1"
+    >
+      Download PNG
+    </.link>
+    <.link href={~p"/mockup/step1"} class="block w-full text-center py-3 px-6 border border-gray-300 rounded-lg shadow-sm text-md font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1 transition duration-150 ease-in-out">
+      Create Another
+    </.link>
+  </div>
+
+  <p class="text-sm text-gray-500 mt-6">Tip: Set this image as your phone's lock screen wallpaper!</p>
+
+</div>

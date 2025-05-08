@@ -1,0 +1,28 @@
+<div class="w-full max-w-md bg-white rounded-xl shadow-2xl p-8">
+  <h1 class="text-3xl font-bold text-center text-gray-800 mb-2">Looking Good!</h1>
+  <p class="text-center text-gray-600 mb-8">Here's a preview of your custom QR lock screen. Ready to checkout?</p>
+
+  <!-- Preview Area -->
+  <div class="relative w-full max-w-xs mx-auto mb-8 rounded-lg overflow-hidden shadow-lg border border-gray-200" style="aspect-ratio: 9 / 19.5;">
+    <!-- Background Template -->
+    <img src={~p"/images/mockups/placeholder-template-1.png"} alt="Selected Template Background" class="absolute inset-0 w-full h-full object-cover z-0">
+
+    <!-- QR Code Overlay -->
+    <div class="absolute inset-0 flex items-center justify-center p-8 z-10">
+      <!-- Adjust positioning and size with padding/margins or top/left/right/bottom properties -->
+      <img src={~p"/images/mockups/placeholder-qr.png"} alt="QR Code" class="w-32 h-32 md:w-40 md:h-40 bg-white p-1 shadow-xl border-2 border-white rounded">
+    </div>
+  </div>
+
+  <div class="space-y-4">
+    <.link href={~p"/mockup/step4"}
+      class="block w-full text-center py-4 px-6 border border-transparent rounded-lg shadow-lg text-lg font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-offset-2 transition duration-150 ease-in-out transform hover:-translate-y-1"
+    >
+      Proceed to Payment ($5.00)
+    </.link>
+    <.link href={~p"/mockup/step2"} class="block w-full text-center py-3 px-6 border border-gray-300 rounded-lg shadow-sm text-md font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1 transition duration-150 ease-in-out">
+      Change Template
+    </.link>
+  </div>
+
+</div>

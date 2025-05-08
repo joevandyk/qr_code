@@ -20,6 +20,17 @@ defmodule QrCodeWeb.Router do
     live "/", HomeLive
   end
 
+  # Mockup routes for visual flow demonstration
+  scope "/mockup", QrCodeWeb do
+    pipe_through :browser
+
+    get "/step1", MockupController, :step1
+    get "/step2", MockupController, :step2
+    get "/step3", MockupController, :step3
+    get "/step4", MockupController, :step4
+    get "/step5", MockupController, :step5
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", QrCodeWeb do
   #   pipe_through :api
