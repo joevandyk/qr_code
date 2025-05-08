@@ -1,5 +1,7 @@
 <div class="w-full max-w-md bg-white rounded-lg shadow-md p-8">
-  <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Enter a URL to generate QR Code</h2>
+  <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">
+    Enter a URL to generate QR Code
+  </h2>
 
   <form phx-submit="next" class="space-y-6">
     <div>
@@ -16,8 +18,13 @@
         phx-hook="Autofocus"
         required
       />
-      <div id="url_error_message" role="alert" aria-live="polite" class="mt-2 text-sm text-red-600">
-        <.error :if={@url_error}><%= Phoenix.HTML.safe_to_string(@url_error) %></.error>
+      <div
+        id="url_error_message"
+        role="alert"
+        aria-live="polite"
+        class="mt-2 text-sm text-red-600"
+      >
+        <.error :if={@url_error}>{Phoenix.HTML.safe_to_string(@url_error)}</.error>
       </div>
     </div>
 

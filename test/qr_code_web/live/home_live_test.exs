@@ -23,7 +23,10 @@ defmodule QrCodeWeb.HomeLiveTest do
       assert view.module == QrCodeWeb.HomeLive
       assert has_element?(view, "input[name=url][value='']")
       refute has_element?(view, "img[alt='Generated QR Code']")
-      assert view |> element("#url_error_message") |> render() == "<div id=\"url_error_message\" role=\"alert\" aria-live=\"polite\"></div>"
+
+      # Check that the error message area is empty/not showing an error
+      # We assert the exact outerHTML of the empty container div, including classes
+      assert view |> element("#url_error_message") |> render() == "<div id=\"url_error_message\" role=\"alert\" aria-live=\"polite\" class=\"mt-2 text-sm text-red-600\"></div>"
     end
   end
 end

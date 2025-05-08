@@ -1,6 +1,10 @@
 defmodule QrCodeWeb.HomeLive do
   use QrCodeWeb, :live_view
   require Logger
+  # Import Gettext backend
+  # import QrCodeWeb.Gettext
+
+  alias QrCodeWeb.UrlValidator
 
   @impl true
   def mount(_params, _session, socket) do
@@ -11,9 +15,35 @@ defmodule QrCodeWeb.HomeLive do
 
   @impl true
   def handle_event("next", %{"url" => url}, socket) do
-    # URL validation and QR code generation will be handled in later stories
-    Logger.info("Next event triggered with URL: #{url}")
-    # For now, just update the URL in the socket
-    {:noreply, assign(socket, url: url)}
+    Logger.info("Validating URL: #{url}")
+
+    case UrlValidator.validate(url) do
+      {:ok, _uri} ->
+        # URL is valid, clear any previous error and proceed (QR generation comes later)
+        Logger.info("URL valid: #{url}")
+        assigns = %{url: url, url_error: nil}
+        # Trigger QR code generation (Story 3)
+        # socket = trigger_qr_generation(socket, url)
+        {:noreply, assign(socket, assigns)}
+
+      {:error, reason} ->
+        # URL is invalid, set error message
+        Logger.warning("URL invalid", url: url, reason: reason)
+        # Emit telemetry event for failed validation
+        :telemetry.execute([:qr_code, :url_validation, :failed], %{error_count: 1}, %{
+          url: url,
+          reason: reason
+        })
+
+        error_message = error_reason_to_message(reason)
+        {:noreply, assign(socket, url: url, url_error: error_message)}
+    end
   end
+
+  # Helper function to map error reasons to Gettext messages
+  defp error_reason_to_message(:invalid_scheme),
+    do: gettext("URL must start with http:// or https://")
+
+  defp error_reason_to_message(:invalid_format), do: gettext("Please enter a valid URL.")
+  defp error_reason_to_message(:invalid_input), do: gettext("Invalid input provided.")
 end
