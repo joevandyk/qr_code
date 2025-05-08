@@ -18,7 +18,7 @@ config :qr_code, QrCode.Repo,
 config :qr_code, QrCodeWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
   secret_key_base: "AhQYk/zdVuqbWj/ngiQs0wIfpanDWBIjVFrV9nfbhQ/x0NLPAaivY1MBzz6z4K5X",
-  server: false
+  server: true
 
 # In test we don't send emails
 config :qr_code, QrCode.Mailer, adapter: Swoosh.Adapters.Test
@@ -35,3 +35,17 @@ config :phoenix, :plug_init_mode, :runtime
 # Enable helpful, but potentially expensive runtime checks
 config :phoenix_live_view,
   enable_expensive_runtime_checks: true
+
+# Configure Wallaby for feature tests
+config :wallaby,
+  # Use Wallaby.Chrome module for the driver
+  driver: Wallaby.Chrome,
+  screenshot_dir: "tmp/wallaby/screenshots",
+  screenshot_on_failure: true, # Automatically take screenshot on errors
+  # The base_url needs to point to the running Phoenix app during tests
+  # We configure it in the test setup using Wallaby.start_session/1
+  # base_url: QrCodeWeb.Endpoint.url(), # This might not work directly here
+  js_logger: true
+
+# Import test configuration from endpoint.exs
+# import_config "../lib/qr_code_web/endpoint.ex" # Removed as it causes compile-time issues

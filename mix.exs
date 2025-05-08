@@ -20,7 +20,7 @@ defmodule QrCode.MixProject do
   def application do
     [
       mod: {QrCode.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :wallaby]
     ]
   end
 
@@ -59,7 +59,8 @@ defmodule QrCode.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
-      {:mishka_chelekom, "~> 0.0.5"}
+      {:mishka_chelekom, "~> 0.0.5"},
+      {:wallaby, "~> 0.30", only: :test}
     ]
   end
 
