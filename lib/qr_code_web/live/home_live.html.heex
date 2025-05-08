@@ -24,7 +24,7 @@
         aria-live="polite"
         class="mt-2 text-sm text-red-600"
       >
-        <.error :if={@url_error}>{Phoenix.HTML.safe_to_string(@url_error)}</.error>
+        <.error :if={@url_error}><%= @url_error %></.error>
       </div>
     </div>
 
