@@ -1,0 +1,44 @@
+<.header>
+  QR Code Lock Screen Generator
+  <:subtitle>Enter a URL to get started</:subtitle>
+</.header>
+
+<div class="max-w-xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+  <form phx-submit="next" class="space-y-6">
+    <div>
+      <label for="url-input" class="sr-only">URL for QR Code</label>
+      <input
+        type="text"
+        name="url"
+        id="url-input"
+        value={@url}
+        placeholder="https://example.com"
+        class="w-full p-3 border rounded-lg focus:outline-none focus:ring"
+        aria-label="URL for QR Code"
+        aria-describedby="url_error_message"
+        phx-hook="Autofocus"
+      />
+      <div id="url_error_message" role="alert" aria-live="polite">
+        <.error :if={@url_error}>{@url_error}</.error>
+      </div>
+    </div>
+
+    <div>
+      <button
+        type="submit"
+        class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+      >
+        Generate QR Code
+      </button>
+    </div>
+  </form>
+
+  <div :if={@qr_png} class="mt-8 p-4 border rounded-lg bg-gray-50">
+    <h3 class="text-lg font-medium text-gray-900 mb-2">Your QR Code:</h3>
+    <img
+      src={"data:image/png;base64,#{Base.encode64(@qr_png)}"}
+      alt="Generated QR Code"
+      class="mx-auto"
+    />
+  </div>
+</div>

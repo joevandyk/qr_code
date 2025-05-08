@@ -31,6 +31,11 @@ const liveSocket = new LiveSocket("/live", Socket, {
     _csrf_token: csrfToken,
   },
   hooks: {
+    Autofocus: {
+      mounted() {
+        this.el.focus();
+      }
+    },
     ...MishkaComponents,
   },
 });
