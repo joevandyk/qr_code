@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="[scrollbar-gutter:stable]">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
-    <.live_title default="QrCode" suffix=" · Phoenix Framework">
-      {assigns[:page_title]}
+    <.live_title suffix=" · Phoenix Framework">
+      <%= assigns[:page_title] || "QrCode" %>
     </.live_title>
     <link phx-track-static rel="stylesheet" href={~p"/assets/css/app.css"} />
-    <script defer phx-track-static type="text/javascript" src={~p"/assets/js/app.js"}>
-    </script>
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/js/app.js"}></script>
     <script>
       (() => {
         const setTheme = (theme) => {
@@ -29,7 +28,14 @@
       })();
     </script>
   </head>
-  <body>
-    {@inner_content}
+  <body class="bg-gray-100 text-gray-900 antialiased flex flex-col min-h-screen">
+    <header class="bg-white shadow-md py-4 px-6">
+      <div class="container mx-auto text-center">
+        <h1 class="text-2xl font-bold text-indigo-600">QR Code Lock Screen Generator</h1>
+      </div>
+    </header>
+    <main class="flex-grow flex items-center justify-center">
+      <%= @inner_content %>
+    </main>
   </body>
 </html>
