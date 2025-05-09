@@ -46,11 +46,9 @@
           />
         </div>
         <div class="mt-1">
-          <%= for error <- @form[:url].errors do %>
-            <div class="text-sm text-red-600">
-              <%= if is_tuple(error), do: elem(error, 0), else: error %>
-            </div>
-          <% end %>
+          <.error :for={{msg, _opts} <- @form[:url].errors}>
+            <%= msg %>
+          </.error>
         </div>
       </div>
 
