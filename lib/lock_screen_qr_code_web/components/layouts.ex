@@ -31,37 +31,19 @@ defmodule LockScreenQRCodeWeb.Layouts do
 
   def app(assigns) do
     ~H"""
-    <header class="navbar px-4 sm:px-6 lg:px-8">
-      <div class="flex-1">
-        <a href="/" class="flex-1 flex w-fit items-center gap-2">
-          <img src={~p"/images/logo.svg"} width="36" />
-          <span class="text-sm font-semibold">v{Application.spec(:phoenix, :vsn)}</span>
-        </a>
-      </div>
-      <div class="flex-none">
-        <ul class="flex flex-column px-1 space-x-4 items-center">
-          <li>
-            <a href="https://phoenixframework.org/" class="btn btn-ghost">Website</a>
-          </li>
-          <li>
-            <a href="https://github.com/phoenixframework/phoenix" class="btn btn-ghost">GitHub</a>
-          </li>
-          <li>
-            <a href="https://hexdocs.pm/phoenix/overview.html" class="btn btn-primary">
-              Get Started <span aria-hidden="true">&rarr;</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </header>
+    <div class="bg-gradient-to-br from-blue-50 to-purple-50">
+      <!-- Decorative background elements -->
+      <div class="fixed top-0 left-0 w-64 h-64 bg-yellow-400 rounded-full opacity-70 blur-3xl -translate-x-1/2 -translate-y-1/2" />
+      <div class="fixed bottom-0 right-0 w-96 h-96 bg-teal-400 rounded-full opacity-70 blur-3xl translate-x-1/4 translate-y-1/4" />
+      <div class="fixed top-1/2 right-0 w-80 h-80 bg-purple-400 rounded-full opacity-60 blur-3xl translate-x-1/3" />
+      <div class="fixed bottom-0 left-1/4 w-72 h-72 bg-coral-400 rounded-full opacity-60 blur-3xl" />
 
-    <main class="px-4 py-20 sm:px-6 lg:px-8">
-      <div class="mx-auto max-w-2xl space-y-4">
+      <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         {render_slot(@inner_block)}
       </div>
-    </main>
 
-    <.flash_group flash={@flash} />
+      <.flash_group flash={@flash} />
+    </div>
     """
   end
 end
