@@ -9,25 +9,16 @@ defmodule LockScreenQRCodeWeb.DesignLive do
   def mount(_params, _session, socket) do
     :telemetry.execute([:lock_screen_qr_code, :design_live, :mount], %{status: :start})
 
-    # QR request is now always available due to the hook creating one if needed
-    if socket.assigns[:qr_request] do
-      Logger.info("DesignLive mounted with QR request: #{socket.assigns.qr_request.id}")
-    else
-      Logger.warning("QR request should have been created by hook but wasn't found")
-    end
-
     templates = Templates.all()
 
     # Default to the first template if none is selected
     template = socket.assigns[:qr_request].template || List.first(templates).id
-    theme = Templates.get_theme(template)
 
-    # Set qr_preview to nil since we'll use the component directly
+    # We no longer need to set theme in the socket assigns
     {:ok, assign(socket,
       templates: templates,
       selected_template: template,
-      qr_preview: nil,
-      theme: theme
+      qr_preview: nil
     )}
   end
 
@@ -38,13 +29,10 @@ defmodule LockScreenQRCodeWeb.DesignLive do
     # Update the QR request with the selected template
     case Requests.update_qr_request(socket.assigns.qr_request, %{template: template_id}) do
       {:ok, updated_qr_request} ->
-        theme = Templates.get_theme(template_id)
-
         {:noreply,
          socket
          |> assign(:qr_request, updated_qr_request)
-         |> assign(:selected_template, template_id)
-         |> assign(:theme, theme)}
+         |> assign(:selected_template, template_id)}
 
       {:error, _changeset} ->
         Logger.error("Failed to update template for QR request: #{socket.assigns.qr_request.id}")
@@ -74,7 +62,6 @@ defmodule LockScreenQRCodeWeb.DesignLive do
             <div style="transform: scale(0.7); transform-origin: top center; margin-bottom: -140px;">
               <.phone_preview
                 qr_request={@qr_request}
-                theme={@theme}
                 gradient={@templates |> Enum.find(fn t -> t.id == @selected_template end) |> Map.get(:gradient)}
               />
             </div>
@@ -112,7 +99,6 @@ defmodule LockScreenQRCodeWeb.DesignLive do
           <div class="flex-shrink-0 flex justify-center">
             <.phone_preview
               qr_request={@qr_request}
-              theme={@theme}
               gradient={@templates |> Enum.find(fn t -> t.id == @selected_template end) |> Map.get(:gradient)}
             />
           </div>
@@ -173,6 +159,4 @@ defmodule LockScreenQRCodeWeb.DesignLive do
     </Layouts.app>
     """
   end
-
-  # We no longer need the generate_qr_preview function as we're using the QRCode component
 end
