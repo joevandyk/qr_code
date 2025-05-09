@@ -68,7 +68,8 @@ defmodule LockScreenQRCode.MixProject do
       {:httpoison, "~> 2.0"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:mock, "~> 0.3.0", only: :test},
-      {:rename, "~> 0.1.0", only: :dev}
+      {:rename, "~> 0.1.0", only: :dev},
+      {:mogrify, "~> 0.9.3"}
     ]
   end
 

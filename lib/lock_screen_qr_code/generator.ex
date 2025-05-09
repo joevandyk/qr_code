@@ -11,6 +11,8 @@ defmodule LockScreenQRCode.Generator do
     * `:format` - Output format, one of :png, :svg (default: :png)
     * `:error_correction` - Error correction level, one of :low, :medium, :quartile, :high (default: :low)
     * `:scale` - Scale factor for the QR code (default: 10)
+    * `:qr_color` - Color of the QR code (default: "#000000" for black)
+    * `:background_color` - Background color (default: "#ffffff" for white)
 
   ## Returns
     * `{:ok, binary}` - Binary data of the QR code
@@ -21,6 +23,8 @@ defmodule LockScreenQRCode.Generator do
     format = Keyword.get(opts, :format, :png)
     error_correction = Keyword.get(opts, :error_correction, :low)
     scale = Keyword.get(opts, :scale, 10)
+    qr_color = Keyword.get(opts, :qr_color, "#000000")
+    background_color = Keyword.get(opts, :background_color, "#ffffff")
 
     # Ensure URL has scheme for QR code library
     url = if String.starts_with?(url, ["http://", "https://"]), do: url, else: "https://" <> url
@@ -33,15 +37,15 @@ defmodule LockScreenQRCode.Generator do
         :png ->
           %QRCode.Render.PngSettings{
             scale: scale,
-            background_color: "#ffffff",
-            qrcode_color: "#000000"
+            background_color: background_color,
+            qrcode_color: qr_color
           }
 
         :svg ->
           %QRCode.Render.SvgSettings{
             scale: scale,
-            background_color: "#ffffff",
-            qrcode_color: "#000000"
+            background_color: background_color,
+            qrcode_color: qr_color
           }
       end
 

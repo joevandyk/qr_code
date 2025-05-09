@@ -15,6 +15,12 @@ defmodule LockScreenQRCodeWeb.Endpoint do
     websocket: [connect_info: [session: @session_options]],
     longpoll: [connect_info: [session: @session_options]]
 
+  # Add a specific plug for the generated QR code images - this needs to come BEFORE the router
+  plug Plug.Static,
+    at: "/generated",
+    from: {:lock_screen_qr_code, "priv/static/generated"},
+    gzip: false
+
   # Serve at "/" the static files from "priv/static" directory.
   #
   # When code reloading is disabled (e.g., in production),

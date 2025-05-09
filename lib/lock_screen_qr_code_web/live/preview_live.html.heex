@@ -8,17 +8,131 @@
   </div>
   <div class="absolute bottom-0 left-1/4 w-72 h-72 bg-coral-400 rounded-full opacity-60 blur-3xl">
   </div>
-  
+
 <!-- Main Content -->
-  <div class="max-w-2xl mx-auto z-10 relative">
-    <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Preview page coming soon</h1>
-    <div class="flex justify-center space-x-4">
-      <.link
-        navigate="/"
-        class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-full py-3 px-8 shadow-md"
+  <div class="w-full max-w-5xl bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-8 relative z-10">
+    <%= if @error do %>
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
+        <strong class="font-bold">Error: </strong>
+        <span class="block sm:inline"><%= @error %></span>
+      </div>
+    <% end %>
+
+    <h1 class="text-4xl font-bold text-center text-gray-800 mb-2">Preview Your QR Code</h1>
+    <p class="text-center text-gray-600 mb-8">This is how your QR code will look on your lock screen.</p>
+
+    <div class="flex flex-col lg:flex-row gap-8 items-center justify-center">
+      <!-- Phone Preview -->
+      <div class="flex-shrink-0">
+        <%= if assigns[:svg_qr_code] && assigns[:template_gradient] do %>
+          <div class="relative mx-auto border-[14px] rounded-[2.5rem] h-[600px] w-[300px] shadow-xl">
+            <div class="absolute top-0 w-[148px] h-[18px] bg-gray-800 rounded-b-[1rem] left-1/2 -translate-x-1/2"></div>
+            <div class="h-[46px] w-[3px] absolute -start-[17px] top-[124px] rounded-s-lg bg-gray-800"></div>
+            <div class="h-[46px] w-[3px] absolute -start-[17px] top-[178px] rounded-s-lg bg-gray-800"></div>
+            <div class="h-[64px] w-[3px] absolute -end-[17px] top-[142px] rounded-e-lg bg-gray-800"></div>
+
+            <!-- Phone Screen with gradient background and QR code -->
+            <div class={"bg-gradient-to-br #{@template_gradient} rounded-3xl overflow-hidden w-[272px] h-[572px] flex flex-col items-center justify-center relative"}>
+              <!-- Time display at top -->
+              <div class="absolute top-8 left-0 right-0 text-center">
+                <p class="text-5xl font-light text-white">
+                  <%=
+                    # Format current time
+                    Calendar.strftime(DateTime.now!("Etc/UTC"), "%H:%M")
+                  %>
+                </p>
+                <p class="text-sm mt-1 text-white/80">
+                  <%=
+                    # Format current date
+                    Calendar.strftime(DateTime.now!("Etc/UTC"), "%A, %B %d")
+                  %>
+                </p>
+              </div>
+
+              <!-- Display text (name or default) -->
+              <p class="text-xl font-bold text-white text-center mb-8 px-4">
+                <%= @qr_request.name || "Scan to connect" %>
+              </p>
+
+              <!-- QR Code -->
+              <div class="w-48 h-48 flex items-center justify-center">
+                <!-- Render the SVG directly -->
+                <%= raw(@svg_qr_code) %>
+              </div>
+
+              <!-- Bottom line -->
+              <div class="absolute bottom-8 left-0 right-0 flex justify-center">
+                <div class="h-1 w-32 rounded-full bg-white/40"></div>
+              </div>
+
+              <!-- Preview Watermark -->
+              <div class="absolute bottom-4 right-4">
+                <p class="text-[8px] text-white/60 font-medium">PREVIEW</p>
+              </div>
+            </div>
+          </div>
+        <% else %>
+          <div class="w-[300px] h-[600px] bg-gray-100 rounded-[2.5rem] flex items-center justify-center">
+            <p class="text-gray-500">Loading preview...</p>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Preview Info -->
+      <div class="flex-grow max-w-lg">
+        <div class="bg-gray-50 rounded-xl p-6 shadow-sm">
+          <h2 class="text-2xl font-bold text-gray-800 mb-4">Your QR Code is Ready!</h2>
+
+          <div class="mb-6 text-gray-600">
+            <p class="mb-3">This QR code will direct anyone who scans it to:</p>
+            <div class="bg-white p-3 rounded-lg border border-gray-200 mb-3 break-all">
+              <p class="font-medium text-gray-800"><%= @qr_request.url %></p>
+            </div>
+            <p>The code has been styled using the <span class="font-medium"><%= String.capitalize(String.replace(@qr_request.template, "_", " ")) %></span> template.</p>
+          </div>
+
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200 mb-4">
+            <div class="flex items-start">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500 mt-0.5 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <p class="text-sm text-yellow-800">
+                This is a preview only. On the next page, you'll be able to download the full quality image for your lock screen.
+              </p>
+            </div>
+          </div>
+
+          <div class="text-gray-600">
+            <h3 class="font-bold text-gray-700 mb-2">What's next?</h3>
+            <ol class="list-decimal pl-5 space-y-1">
+              <li>Continue to download the QR code image</li>
+              <li>Set it as your phone's lock screen</li>
+              <li>Show it to anyone who wants to connect with you</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-10 flex flex-col sm:flex-row justify-between gap-4 sm:gap-3">
+      <button
+        phx-click="back"
+        class="w-full sm:w-auto bg-white text-indigo-600 border border-indigo-200 hover:bg-indigo-50 font-medium rounded-full py-3 px-6 shadow-sm flex justify-center items-center gap-2 order-2 sm:order-1"
       >
-        Back to Home
-      </.link>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Back
+      </button>
+      <button
+        phx-click="continue"
+        class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-full py-3 px-6 shadow-md flex justify-center items-center gap-2 order-1 sm:order-2"
+      >
+        Continue
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </button>
     </div>
   </div>
 </div>
