@@ -29,13 +29,21 @@ defmodule QrCodeWeb.NavigationTest do
     test "can navigate from home to create page", %{conn: conn} do
       {:ok, home_view, _html} = live(conn, ~p"/")
 
-      # Navigate to Create page from first CTA button (using more specific selector)
-      {:ok, create_view, _html} =
+      # Click on the Start button which will redirect to a regular controller
+      # then to the create page
+      assert {:error, {:live_redirect, %{to: "/start", kind: :push}}} =
         home_view
-        |> element(~s{div.mt-10 a[href="/create"]})
+        |> element(~s{div.mt-10 a[href="/start"]})
         |> render_click()
-        |> follow_redirect(conn)
 
+      # Follow the redirects through the controller to the create page
+      conn = get(conn, "/start")
+      assert redirected_to(conn) == "/create"
+
+      # Now visit the create page with the session from the previous request
+      {:ok, create_view, _html} = live(recycle(conn), "/create")
+
+      # Verify we're on the create page
       assert has_element?(create_view, "h1", "Add your link")
     end
 

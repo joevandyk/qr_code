@@ -64,7 +64,9 @@ defmodule QrCode.MixProject do
       {:bandit, "~> 1.5"},
       {:mishka_chelekom, "~> 0.0.5"},
       {:wallaby, "~> 0.30", only: :test, runtime: false},
-      {:httpoison, "~> 2.0"}
+      {:httpoison, "~> 2.0"},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:mock, "~> 0.3.0", only: :test}
     ]
   end
 

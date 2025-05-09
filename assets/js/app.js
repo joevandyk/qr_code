@@ -22,23 +22,44 @@ import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
 import MishkaComponents from "../vendor/mishka_components.js";
-const csrfToken = document
-  .querySelector("meta[name='csrf-token']")
-  .getAttribute("content");
-const liveSocket = new LiveSocket("/live", Socket, {
+
+let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
+
+// Define hooks for LiveView
+let Hooks = {};
+
+// Hook for storing session data
+Hooks.StoreSession = {
+  mounted() {
+    this.handleEvent("store_session", (data) => {
+      // Get CSRF token for the request
+      const token = document.querySelector("meta[name='csrf-token']").getAttribute("content");
+
+      // Send POST request to store session data
+      fetch("/api/session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": token
+        },
+        body: JSON.stringify(data)
+      }).then(response => {
+        console.log("Session updated", response.status);
+      }).catch(error => {
+        console.error("Failed to store session", error);
+      });
+    });
+  }
+};
+
+let liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
   params: {
     _csrf_token: csrfToken,
   },
-  hooks: {
-    Autofocus: {
-      mounted() {
-        this.el.focus();
-      }
-    },
-    ...MishkaComponents,
-  },
+  hooks: Hooks
 });
+
 // Show progress bar on live navigation and form submits
 topbar.config({
   barColors: {
@@ -72,12 +93,15 @@ if (process.env.NODE_ENV === "development") {
       //
       //   * click with "c" key pressed to open at caller location
       //   * click with "d" key pressed to open at function component definition location
-      let keyDown;
-      window.addEventListener("keydown", (e) => (keyDown = e.key));
-      window.addEventListener("keyup", (e) => (keyDown = null));
+      let keyDown = null;  // Initialize with null to ensure it's defined
+      window.addEventListener("keydown", (e) => { keyDown = e.key });
+      window.addEventListener("keyup", () => { keyDown = null });
       window.addEventListener(
         "click",
         (e) => {
+          // Only proceed if keyDown is defined
+          if (!keyDown) return;
+
           if (keyDown === "c") {
             e.preventDefault();
             e.stopImmediatePropagation();

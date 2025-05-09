@@ -1,69 +1,112 @@
 defmodule QrCodeWeb.CreateLive do
   use QrCodeWeb, :live_view
   require Logger
+  alias QrCode.Requests
+  alias QrCode.QrRequest
+  alias QrCode.Repo
+
+  @sample_sites [
+    "https://github.com",
+    "https://elixir-lang.org",
+    "https://hexdocs.pm",
+    "https://phoenixframework.org",
+    "https://developer.mozilla.org",
+    "https://tailwindcss.com",
+    "https://fly.io",
+    "https://example.com"
+  ]
 
   @impl true
   def mount(_params, _session, socket) do
     :telemetry.execute([:qr_code, :create_live, :mount], %{status: :start})
     Logger.info("CreateLive mounted")
 
-    {:ok,
-     socket
-     |> assign(:url, "")
-     |> assign(:name, "")
-     |> assign(:error, nil)}
+    # Check if there's already a QR request loaded by the hook
+    socket =
+      if socket.assigns[:qr_request] do
+        Logger.info("Using existing QR request with URL: #{socket.assigns.qr_request.url}")
+        socket
+      else
+        # The hook should have loaded the QR request from the session token
+        # If we get here, something went wrong with the hook or session
+        Logger.warning("No QR request found via hook - should not happen")
+        random_url = Enum.random(@sample_sites)
+        # We intentionally don't generate a token here - that's the controller's job
+        assign(socket, :qr_request, %QrRequest{
+          url: random_url,
+          name: ""
+        })
+      end
+
+    # Create a changeset and convert to form
+    changeset = QrRequest.changeset(socket.assigns.qr_request, %{})
+
+    {:ok, assign(socket, form: to_form(changeset))}
   end
 
   @impl true
-  def handle_event("validate", %{"url" => url, "name" => name}, socket) do
-    # Basic validation during typing (live feedback)
-    error = validate_url(url)
+  def handle_event("validate", %{"qr_request" => params}, socket) do
+    # Create a changeset for validation
+    changeset =
+      socket.assigns.qr_request
+      |> QrRequest.changeset(params)
+      |> Map.put(:action, :validate)
 
-    {:noreply,
-     socket
-     |> assign(:url, url)
-     |> assign(:name, name)
-     |> assign(:error, error)}
+    {:noreply, assign(socket, :form, to_form(changeset))}
   end
 
   @impl true
-  def handle_event("save", %{"url" => url, "name" => name}, socket) do
-    # Final validation before submission
-    case validate_url(url) do
-      nil ->
-        Logger.info("Valid URL submitted: #{url}, name: #{name}")
-        # Pass parameters directly via navigation
+  def handle_event("save", %{"qr_request" => params}, socket) do
+    # Create or update QR request
+    case create_or_update_qr_request(socket, params) do
+      {:ok, qr_request} ->
+        # Store the QR request in assigns and navigate to design page
         {:noreply,
          socket
-         |> push_navigate(to: ~p"/design?#{%{url: url, name: name}}")}
+         |> clear_flash()
+         |> assign(:qr_request, qr_request)
+         |> push_navigate(to: ~p"/design")}
 
-      error ->
-        Logger.warning("Invalid URL submitted: #{url}, error: #{error}")
+      {:error, changeset} ->
+        error_message = get_error_message(changeset)
+        Logger.error("QR request error: #{error_message}")
+
         {:noreply,
          socket
-         |> assign(:error, error)}
+         |> assign(:form, to_form(changeset))}
     end
   end
 
-  # URL validation function
-  defp validate_url(""), do: nil
-  defp validate_url(url) do
-    cond do
-      not String.starts_with?(url, ["http://", "https://"]) ->
-        "URL must start with http:// or https://"
+  # Create a new QR request or update existing one
+  defp create_or_update_qr_request(socket, params) do
+    # Print the current qr_request for debugging
+    IO.inspect(socket.assigns.qr_request, label: "CURRENT QR REQUEST")
+    IO.puts("NEW PARAMS: #{inspect(params)}")
 
-      String.length(url) < 10 ->
-        "URL is too short"
+    case socket.assigns.qr_request do
+      %QrRequest{id: id} = qr_request when is_integer(id) ->
+        # Log the current URL in the DB for comparison
+        IO.puts("Current URL in database: #{qr_request.url}")
+        IO.puts("URL from form submission: #{params["url"]}")
 
-      not valid_url_format?(url) ->
-        "Please enter a valid URL"
+        # Use the standard update approach
+        IO.inspect(params, label: "UPDATE PARAMS")
+        Requests.update_qr_request(qr_request, params)
 
-      true -> nil
+      _ ->
+        # Create new request with token
+        Requests.create_qr_request(params)
     end
   end
 
-  defp valid_url_format?(url) do
-    uri = URI.parse(url)
-    uri.scheme != nil && uri.host =~ "."
+  # Extract a user-friendly error message from a changeset
+  defp get_error_message(changeset) do
+    Ecto.Changeset.traverse_errors(changeset, fn {msg, opts} ->
+      Regex.replace(~r"%{(\w+)}", msg, fn _, key ->
+        opts |> Keyword.get(String.to_existing_atom(key), key) |> to_string()
+      end)
+    end)
+    |> Enum.map(fn {k, v} -> "#{k}: #{Enum.join(v, ", ")}" end)
+    |> Enum.join("; ")
   end
 end

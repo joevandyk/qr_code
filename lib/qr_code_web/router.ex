@@ -18,11 +18,18 @@ defmodule QrCodeWeb.Router do
     pipe_through :browser
 
     live "/", HomeLive
-    live "/create", CreateLive
-    live "/design", DesignLive
-    live "/preview", PreviewLive
-    live "/checkout", CheckoutLive
-    live "/download", DownloadLive
+
+    # Regular controller action to initialize the QR request session
+    get "/start", QrRequestController, :start
+
+    live_session :qr_code_flow, on_mount: {QrCodeWeb.QrSessionHook, :ensure_qr_data} do
+      live "/create", CreateLive
+      live "/design", DesignLive
+      live "/preview", PreviewLive
+      live "/checkout", CheckoutLive
+      live "/download", DownloadLive
+    end
+
     live "/about", AboutLive
   end
 

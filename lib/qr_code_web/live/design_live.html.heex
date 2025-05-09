@@ -8,16 +8,50 @@
   </div>
   <div class="absolute bottom-0 left-1/4 w-72 h-72 bg-coral-400 rounded-full opacity-60 blur-3xl">
   </div>
-  
+
 <!-- Main Content -->
   <div class="max-w-2xl mx-auto z-10 relative">
-    <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Design page coming soon</h1>
-    <div class="flex justify-center space-x-4">
+    <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Choose Your QR Code Style</h1>
+
+    <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+      <h2 class="text-xl font-semibold mb-4">Your QR Code Details</h2>
+      <div class="grid grid-cols-1 gap-4">
+        <div>
+          <p class="text-sm text-gray-500">Link:</p>
+          <p id="qr-url" class="font-medium">{@qr_request.url}</p>
+        </div>
+        <%= if @qr_request.name && @qr_request.name != "" do %>
+          <div>
+            <p class="text-sm text-gray-500">Display Name:</p>
+            <p id="qr-name" class="font-medium">{@qr_request.name}</p>
+          </div>
+        <% end %>
+
+        <!-- Debug button to manually refresh data -->
+        <div class="mt-2">
+          <button
+            phx-click="refresh_data"
+            class="text-xs text-gray-500 hover:text-gray-700"
+          >
+            [Refresh Data]
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex justify-between space-x-4">
+      <button
+        phx-click="back"
+        class="bg-white text-indigo-600 border border-indigo-200 hover:bg-indigo-50 font-medium rounded-full py-3 px-6 shadow-sm"
+      >
+        &larr; Back
+      </button>
+
       <.link
-        navigate="/"
+        navigate="/preview"
         class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-full py-3 px-8 shadow-md"
       >
-        Back to Home
+        Continue &rarr;
       </.link>
     </div>
   </div>
