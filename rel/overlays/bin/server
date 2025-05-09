@@ -2,4 +2,5 @@
 set -eu
 
 cd -P -- "$(dirname -- "$0")"
+./lock_screen_qr_code eval LockScreenQrCode.Release.migrate
 PHX_SERVER=true exec ./lock_screen_qr_code start
