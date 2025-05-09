@@ -71,17 +71,42 @@ defmodule LockScreenQRCodeWeb.DesignLive do
 
   # Generate a QR code preview as a base64 data URL
   defp generate_qr_preview(url) do
-    case Generator.generate(url, size: 200, format: :png) do
-      {:ok, qr_binary} ->
+    Logger.info("Generating QR code preview for URL: #{url}")
+
+    # Generate QR code using the updated Generator module
+    result = Generator.generate(url, format: :png)
+
+    # Handle the result, using nil for any error case
+    case result do
+      {:ok, qr_binary} when is_binary(qr_binary) ->
+        # Log success
+        byte_size = byte_size(qr_binary)
+        Logger.info("QR code generated successfully: #{byte_size} bytes")
+
         # Add watermark for preview
-        {:ok, watermarked_binary} = Generator.add_preview_watermark(qr_binary)
+        # The add_preview_watermark function always returns {:ok, binary} for now
+        watermark_result = Generator.add_preview_watermark(qr_binary)
 
-        # Convert to base64 data URL for display in img tag
-        "data:image/png;base64," <> Base.encode64(watermarked_binary)
+        case watermark_result do
+          {:ok, watermarked_binary} ->
+            # Convert to base64 data URL for display in img tag
+            data_url = "data:image/png;base64," <> Base.encode64(watermarked_binary)
+            Logger.info("QR code data URL generated (length: #{String.length(data_url)})")
+            data_url
 
-      {:error, reason} ->
-        Logger.error("Failed to generate QR code preview: #{reason}")
+          # This case is added for future compatibility if the function is changed
+          _other ->
+            Logger.error("Unexpected watermark result: #{inspect(watermark_result)}")
+            nil
+        end
+
+      _error_or_invalid_binary ->
+        Logger.error("Failed to generate valid QR code binary")
         nil
     end
+  rescue
+    e ->
+      Logger.error("Exception while generating QR code: #{inspect(e)}")
+      nil
   end
 end

@@ -13,13 +13,18 @@
     <h1 class="text-4xl font-bold text-center text-gray-800 mb-2">Make it pop!</h1>
     <p class="text-center text-gray-600 mb-8">Choose a style that matches your vibe</p>
 
+    <!-- Hidden elements for testing -->
+    <div class="hidden">
+      <span id="qr-url"><%= @qr_request.url %></span>
+      <span id="qr-name"><%= @qr_request.name || "" %></span>
+    </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
       <!-- Phone Mockup Preview - Responsive for all screen sizes -->
       <div class="order-2 lg:order-1">
         <h2 class="text-xl font-semibold mb-4 text-indigo-700">Preview on device:</h2>
         <div class="flex justify-center">
-          <.device_mockup device="phone" color="base" class="w-60 lg:w-64">
+          <.device_mockup color="base" class="w-60 lg:w-64">
             <div class={"w-full h-full bg-gradient-to-br relative overflow-hidden #{@templates |> Enum.find(fn t -> t.id == @selected_template end) |> Map.get(:gradient)}"}>
               <!-- Lock screen time -->
               <div class="absolute top-8 left-0 right-0 text-center">
