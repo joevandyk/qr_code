@@ -25,12 +25,13 @@ defmodule QrCodeWeb.MockupValidationTest do
 
     # Analyze the screenshot
     screenshot_path = "tmp/wallaby/screenshots/#{@screenshot_prefix}step1.png"
+
     assert validate_screenshot(screenshot_path, %{
-      "header" => true,
-      "three_steps" => true,
-      "example_gallery" => true,
-      "cta_button" => true
-    })
+             "header" => true,
+             "three_steps" => true,
+             "example_gallery" => true,
+             "cta_button" => true
+           })
   end
 
   feature "Validate mockup Step 2", %{session: session} do
@@ -41,9 +42,10 @@ defmodule QrCodeWeb.MockupValidationTest do
 
     # Analyze the screenshot
     screenshot_path = "tmp/wallaby/screenshots/#{@screenshot_prefix}step2.png"
+
     assert validate_screenshot(screenshot_path, %{
-      "template_selection" => true
-    })
+             "template_selection" => true
+           })
   end
 
   feature "Validate mockup Step 3", %{session: session} do
@@ -54,10 +56,11 @@ defmodule QrCodeWeb.MockupValidationTest do
 
     # Analyze the screenshot
     screenshot_path = "tmp/wallaby/screenshots/#{@screenshot_prefix}step3.png"
+
     assert validate_screenshot(screenshot_path, %{
-      "preview" => true,
-      "checkout_button" => true
-    })
+             "preview" => true,
+             "checkout_button" => true
+           })
   end
 
   # Helper function to analyze a screenshot
@@ -65,11 +68,12 @@ defmodule QrCodeWeb.MockupValidationTest do
     with {:ok, %HTTPoison.Response{status_code: 200, body: body}} <-
            HTTPoison.get("#{@analysis_server}/analyze?path=#{screenshot_path}"),
          {:ok, analysis} <- Jason.decode(body) do
-
       # Check if all expected elements are present
       Enum.all?(expected_elements, fn {element, expected} ->
         case analysis["hasElement"][element] do
-          ^expected -> true
+          ^expected ->
+            true
+
           _ ->
             IO.puts("Element '#{element}' validation failed. Expected: #{expected}")
             false
@@ -79,9 +83,11 @@ defmodule QrCodeWeb.MockupValidationTest do
       {:ok, %HTTPoison.Response{status_code: status_code}} ->
         IO.puts("Analysis server returned status code: #{status_code}")
         false
+
       {:error, %HTTPoison.Error{reason: reason}} ->
         IO.puts("Error connecting to analysis server: #{reason}")
         false
+
       {:error, reason} ->
         IO.puts("Error parsing analysis result: #{reason}")
         false

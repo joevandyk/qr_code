@@ -27,7 +27,8 @@ defmodule QrCodeWeb.HomeLiveTest do
 
       # Check that the error message area is empty/not showing an error
       # We assert the exact outerHTML of the empty container div, including classes
-      assert view |> element("#url_error_message") |> render() == "<div id=\"url_error_message\" role=\"alert\" aria-live=\"polite\" class=\"mt-2 text-sm text-red-600\"></div>"
+      assert view |> element("#url_error_message") |> render() ==
+               "<div id=\"url_error_message\" role=\"alert\" aria-live=\"polite\" class=\"mt-2 text-sm text-red-600\"></div>"
     end
 
     test "shows error message for invalid URL", %{conn: conn} do

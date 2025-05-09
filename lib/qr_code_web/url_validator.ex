@@ -15,7 +15,8 @@ defmodule QrCodeWeb.UrlValidator do
 
       case uri do
         # Case 1: Valid scheme and non-empty host
-        %URI{scheme: scheme, host: host} when scheme in ["http", "https"] and is_binary(host) and host != "" ->
+        %URI{scheme: scheme, host: host}
+        when scheme in ["http", "https"] and is_binary(host) and host != "" ->
           {:ok, uri}
 
         # Case 2: Scheme is present but not http/https

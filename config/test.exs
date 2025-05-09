@@ -41,7 +41,8 @@ config :wallaby,
   # Use Wallaby.Chrome module for the driver
   driver: Wallaby.Chrome,
   screenshot_dir: "tmp/wallaby/screenshots",
-  screenshot_on_failure: true, # Automatically take screenshot on errors
+  # Automatically take screenshot on errors
+  screenshot_on_failure: true,
   # The base_url needs to point to the running Phoenix app during tests
   # We configure it in the test setup using Wallaby.start_session/1
   # base_url: QrCodeWeb.Endpoint.url(), # This might not work directly here

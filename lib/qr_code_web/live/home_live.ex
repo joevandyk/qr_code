@@ -10,7 +10,7 @@ defmodule QrCodeWeb.HomeLive do
   def mount(_params, _session, socket) do
     :telemetry.execute([:qr_code, :home_live, :mount], %{status: :start})
     Logger.info("HomeLive mounted")
-    {:ok, assign(socket, url: "", qr_png: nil, url_error: nil)}
+    {:ok, socket}
   end
 
   @impl true

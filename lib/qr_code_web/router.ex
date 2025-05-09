@@ -18,6 +18,12 @@ defmodule QrCodeWeb.Router do
     pipe_through :browser
 
     live "/", HomeLive
+    live "/create", CreateLive
+    live "/design", DesignLive
+    live "/preview", PreviewLive
+    live "/checkout", CheckoutLive
+    live "/download", DownloadLive
+    live "/about", AboutLive
   end
 
   # Mockup routes for visual flow demonstration

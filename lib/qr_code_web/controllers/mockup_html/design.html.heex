@@ -1,9 +1,13 @@
 <div class="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 py-12 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center relative overflow-hidden">
   <!-- Decorative background elements -->
-  <div class="absolute top-0 left-0 w-64 h-64 bg-yellow-400 rounded-full opacity-70 blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
-  <div class="absolute bottom-0 right-0 w-96 h-96 bg-teal-400 rounded-full opacity-70 blur-3xl translate-x-1/4 translate-y-1/4"></div>
-  <div class="absolute top-1/2 right-0 w-80 h-80 bg-purple-400 rounded-full opacity-60 blur-3xl translate-x-1/3"></div>
-  <div class="absolute bottom-0 left-1/4 w-72 h-72 bg-coral-400 rounded-full opacity-60 blur-3xl"></div>
+  <div class="absolute top-0 left-0 w-64 h-64 bg-yellow-400 rounded-full opacity-70 blur-3xl -translate-x-1/2 -translate-y-1/2">
+  </div>
+  <div class="absolute bottom-0 right-0 w-96 h-96 bg-teal-400 rounded-full opacity-70 blur-3xl translate-x-1/4 translate-y-1/4">
+  </div>
+  <div class="absolute top-1/2 right-0 w-80 h-80 bg-purple-400 rounded-full opacity-60 blur-3xl translate-x-1/3">
+  </div>
+  <div class="absolute bottom-0 left-1/4 w-72 h-72 bg-coral-400 rounded-full opacity-60 blur-3xl">
+  </div>
 
   <div class="w-full max-w-3xl bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-8 relative z-10">
     <h1 class="text-4xl font-bold text-center text-gray-800 mb-2">Make it pop!</h1>
@@ -15,39 +19,67 @@
         <h2 class="text-xl font-semibold mb-4 text-indigo-700">Pick your template:</h2>
         <div class="grid grid-cols-2 gap-4">
           <!-- Template 1 (Selected Example) -->
-          <.link href={~p"/mockup/preview"} class="block rounded-xl overflow-hidden shadow-lg transform transition-all hover:scale-105 border-4 border-indigo-500 ring-4 ring-indigo-300 ring-offset-2">
+          <.link
+            href={~p"/mockup/preview"}
+            class="block rounded-xl overflow-hidden shadow-lg transform transition-all hover:scale-105 border-4 border-indigo-500 ring-4 ring-indigo-300 ring-offset-2"
+          >
             <div class="relative h-64 bg-gradient-to-br from-pink-400 to-purple-500">
-              <img src="https://placehold.co/270x585/transparent/ffffff/png?text=QR" alt="Template 1" class="absolute inset-0 w-full h-full object-contain p-6">
+              <img
+                src="https://placehold.co/270x585/transparent/ffffff/png?text=QR"
+                alt="Template 1"
+                class="absolute inset-0 w-full h-full object-contain p-6"
+              />
               <div class="absolute bottom-0 left-0 right-0 bg-white/90 p-2 text-center">
                 <span class="text-xs font-bold text-indigo-900">Pop Vibes</span>
               </div>
             </div>
           </.link>
-
-          <!-- Template 2 -->
-          <.link href={~p"/mockup/preview"} class="block rounded-xl overflow-hidden shadow-lg transform transition-all hover:scale-105 border border-gray-200 hover:border-indigo-400">
+          
+<!-- Template 2 -->
+          <.link
+            href={~p"/mockup/preview"}
+            class="block rounded-xl overflow-hidden shadow-lg transform transition-all hover:scale-105 border border-gray-200 hover:border-indigo-400"
+          >
             <div class="relative h-64 bg-gradient-to-br from-teal-400 to-blue-500">
-              <img src="https://placehold.co/270x585/transparent/ffffff/png?text=QR" alt="Template 2" class="absolute inset-0 w-full h-full object-contain p-6">
+              <img
+                src="https://placehold.co/270x585/transparent/ffffff/png?text=QR"
+                alt="Template 2"
+                class="absolute inset-0 w-full h-full object-contain p-6"
+              />
               <div class="absolute bottom-0 left-0 right-0 bg-white/90 p-2 text-center">
                 <span class="text-xs font-bold text-teal-900">Ocean Blue</span>
               </div>
             </div>
           </.link>
-
-          <!-- Template 3 -->
-          <.link href={~p"/mockup/preview"} class="block rounded-xl overflow-hidden shadow-lg transform transition-all hover:scale-105 border border-gray-200 hover:border-indigo-400">
+          
+<!-- Template 3 -->
+          <.link
+            href={~p"/mockup/preview"}
+            class="block rounded-xl overflow-hidden shadow-lg transform transition-all hover:scale-105 border border-gray-200 hover:border-indigo-400"
+          >
             <div class="relative h-64 bg-gradient-to-br from-yellow-400 to-orange-500">
-              <img src="https://placehold.co/270x585/transparent/ffffff/png?text=QR" alt="Template 3" class="absolute inset-0 w-full h-full object-contain p-6">
+              <img
+                src="https://placehold.co/270x585/transparent/ffffff/png?text=QR"
+                alt="Template 3"
+                class="absolute inset-0 w-full h-full object-contain p-6"
+              />
               <div class="absolute bottom-0 left-0 right-0 bg-white/90 p-2 text-center">
                 <span class="text-xs font-bold text-yellow-900">Sunny Side</span>
               </div>
             </div>
           </.link>
-
-          <!-- Template 4 -->
-          <.link href={~p"/mockup/preview"} class="block rounded-xl overflow-hidden shadow-lg transform transition-all hover:scale-105 border border-gray-200 hover:border-indigo-400">
+          
+<!-- Template 4 -->
+          <.link
+            href={~p"/mockup/preview"}
+            class="block rounded-xl overflow-hidden shadow-lg transform transition-all hover:scale-105 border border-gray-200 hover:border-indigo-400"
+          >
             <div class="relative h-64 bg-gradient-to-br from-gray-800 to-gray-900">
-              <img src="https://placehold.co/270x585/transparent/ffffff/png?text=QR" alt="Template 4" class="absolute inset-0 w-full h-full object-contain p-6">
+              <img
+                src="https://placehold.co/270x585/transparent/ffffff/png?text=QR"
+                alt="Template 4"
+                class="absolute inset-0 w-full h-full object-contain p-6"
+              />
               <div class="absolute bottom-0 left-0 right-0 bg-white/90 p-2 text-center">
                 <span class="text-xs font-bold text-gray-900">Monochrome</span>
               </div>
@@ -58,8 +90,18 @@
     </div>
 
     <div class="mt-10 flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-3">
-      <.link href={~p"/mockup/create"} class="w-full sm:w-auto bg-white text-indigo-600 border border-indigo-200 hover:bg-indigo-50 font-medium rounded-full py-3 px-6 shadow-sm flex justify-center order-2 sm:order-1">&larr; Back</.link>
-      <.link href={~p"/mockup/preview"} class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-full py-3 px-8 shadow-md flex justify-center order-1 sm:order-2">Preview &rarr;</.link>
+      <.link
+        href={~p"/mockup/create"}
+        class="w-full sm:w-auto bg-white text-indigo-600 border border-indigo-200 hover:bg-indigo-50 font-medium rounded-full py-3 px-6 shadow-sm flex justify-center order-2 sm:order-1"
+      >
+        &larr; Back
+      </.link>
+      <.link
+        href={~p"/mockup/preview"}
+        class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-full py-3 px-8 shadow-md flex justify-center order-1 sm:order-2"
+      >
+        Preview &rarr;
+      </.link>
     </div>
   </div>
 </div>
