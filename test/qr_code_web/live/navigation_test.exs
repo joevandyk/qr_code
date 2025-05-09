@@ -36,7 +36,7 @@ defmodule QrCodeWeb.NavigationTest do
         |> render_click()
         |> follow_redirect(conn)
 
-      assert has_element?(create_view, "h1", "Create page coming soon")
+      assert has_element?(create_view, "h1", "Add your link")
     end
 
     test "mobile menu markup is present", %{conn: conn} do
