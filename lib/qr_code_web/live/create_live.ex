@@ -3,7 +3,6 @@ defmodule QrCodeWeb.CreateLive do
   require Logger
   alias QrCode.Requests
   alias QrCode.QrRequest
-  alias QrCode.Repo
 
   @sample_sites [
     "https://github.com",

@@ -78,23 +78,12 @@ defmodule QrCode.Requests do
   """
   def update_qr_request(%QrRequest{} = qr_request, attrs) do
     # Log the qr_request and attrs for debugging
-    IO.inspect(qr_request, label: "QR REQUEST BEFORE UPDATE")
-    IO.inspect(attrs, label: "UPDATE ATTRIBUTES")
 
     # Create and print the changeset before update
     changeset = QrRequest.changeset(qr_request, attrs)
-    IO.inspect(changeset.changes, label: "CHANGESET CHANGES")
 
     # Update the record
     result = Repo.update(changeset)
-
-    # Log the result
-    case result do
-      {:ok, updated} ->
-        IO.inspect(updated, label: "UPDATED QR REQUEST")
-      {:error, error_changeset} ->
-        IO.inspect(error_changeset.errors, label: "UPDATE ERRORS")
-    end
 
     result
   end
