@@ -151,7 +151,6 @@ defmodule LockScreenQRCode.Compositor do
         raise "ImageMagick failed: #{cmd_output}"
       end
 
-      # Add the QR code to the center, preserving transparency
       qr_size = 800 # Make QR code slightly larger to match web preview
 
       # Add a white background square for the QR code for better visibility
@@ -173,10 +172,15 @@ defmodule LockScreenQRCode.Compositor do
       # Add text if provided - position it higher like in the web preview
       overlay_args = if opts.text do
         Logger.debug("Adding text overlay: #{opts.text}")
+
+        # Determine text color based on template - use black for clean_white, white for all others
+        text_color = if template_info.id == "clean_white", do: "black", else: "white"
+        Logger.debug("Using text color: #{text_color} for template: #{template_info.id}")
+
         overlay_args ++ [
           "-gravity", "North",
           "-pointsize", "65", # Slightly smaller text for better fit
-          "-fill", "white",
+          "-fill", text_color,
           "-size", "#{opts.width-100}x", # Add width constraint with padding
           "-background", "transparent",
           "-gravity", "Center",

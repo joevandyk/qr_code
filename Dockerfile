@@ -77,6 +77,7 @@ RUN echo 'Acquire::ForceIPv4 "true";' > /etc/apt/apt.conf.d/99force-ipv4
 
 RUN apt-get update -y && \
   apt-get install -y libstdc++6 openssl libncurses5 locales ca-certificates curl \
+  imagemagick \
   && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
 # Set the locale

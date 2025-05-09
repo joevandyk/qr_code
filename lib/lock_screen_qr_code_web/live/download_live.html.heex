@@ -95,24 +95,26 @@
     </div>
 
     <div class="mt-10 flex flex-col sm:flex-row justify-between gap-4 sm:gap-3">
-      <button
-        phx-click="back"
+      <.link
+        navigate={~p"/preview"}
+        replace={true}
         class="w-full sm:w-auto bg-white text-indigo-600 border border-indigo-200 hover:bg-indigo-50 font-medium rounded-full py-3 px-6 shadow-sm flex justify-center items-center gap-2 order-2 sm:order-1"
       >
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
         </svg>
         Back
-      </button>
-      <button
-        phx-click="create_another"
+      </.link>
+      <.link
+        navigate={~p"/create"}
+        replace={true}
         class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-full py-3 px-6 shadow-md flex justify-center items-center gap-2 order-1 sm:order-2"
       >
         Create Another
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
         </svg>
-      </button>
+      </.link>
     </div>
   </div>
 </div>
