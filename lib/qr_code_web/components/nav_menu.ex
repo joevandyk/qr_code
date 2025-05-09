@@ -3,8 +3,6 @@ defmodule QrCodeWeb.Components.NavMenu do
 
   # Import link component and path helpers
   import Phoenix.Component
-  alias QrCodeWeb.Router.Helpers, as: Routes
-  alias QrCodeWeb.Endpoint
 
   def render(assigns) do
     ~H"""

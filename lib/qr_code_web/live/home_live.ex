@@ -1,8 +1,6 @@
 defmodule QrCodeWeb.HomeLive do
   use QrCodeWeb, :live_view
   require Logger
-  # Import Gettext backend
-  # import QrCodeWeb.Gettext
 
   alias QrCodeWeb.UrlValidator
 

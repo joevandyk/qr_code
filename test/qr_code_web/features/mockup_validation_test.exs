@@ -1,5 +1,4 @@
 defmodule QrCodeWeb.MockupValidationTest do
-  k
   use ExUnit.Case, async: false
   use Wallaby.Feature
 

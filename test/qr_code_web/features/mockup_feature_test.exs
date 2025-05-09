@@ -2,6 +2,9 @@ defmodule QrCodeWeb.MockupFeatureTest do
   use ExUnit.Case, async: false
   use Wallaby.Feature
 
+  # Add feature tag to exclude by default
+  @moduletag :feature
+
   alias QrCodeWeb.Endpoint
 
   @base_url "http://localhost:#{Endpoint.config(:port, 4002)}"

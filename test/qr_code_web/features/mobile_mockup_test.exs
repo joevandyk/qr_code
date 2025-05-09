@@ -3,7 +3,9 @@ defmodule QrCodeWeb.MobileMockupTest do
   use Wallaby.Feature
 
   import Wallaby.Browser
-  import Wallaby.Query, only: [css: 1, css: 2]
+  import Wallaby.Query, only: [css: 1]
+
+  @moduletag :feature
 
   alias QrCodeWeb.Endpoint
 

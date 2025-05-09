@@ -10,7 +10,10 @@ defmodule QrCode.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
-      listeners: [Phoenix.CodeReloader]
+      listeners: [Phoenix.CodeReloader],
+      preferred_cli_env: [
+        "test.features": :test
+      ]
     ]
   end
 
@@ -20,7 +23,7 @@ defmodule QrCode.MixProject do
   def application do
     [
       mod: {QrCode.Application, []},
-      extra_applications: [:logger, :runtime_tools, :wallaby]
+      extra_applications: [:logger, :runtime_tools]
     ]
   end
 
@@ -60,7 +63,7 @@ defmodule QrCode.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
       {:mishka_chelekom, "~> 0.0.5"},
-      {:wallaby, "~> 0.30", only: :test},
+      {:wallaby, "~> 0.30", only: :test, runtime: false},
       {:httpoison, "~> 2.0"}
     ]
   end
@@ -76,7 +79,8 @@ defmodule QrCode.MixProject do
       setup: ["deps.get", "ecto.setup", "assets.setup", "assets.build"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
+      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test --exclude feature"],
+      "test.features": ["ecto.create --quiet", "ecto.migrate --quiet", "test --only feature"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
       "assets.build": ["tailwind qr_code", "esbuild qr_code"],
       "assets.deploy": [
