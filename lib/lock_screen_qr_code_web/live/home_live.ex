@@ -3,11 +3,16 @@ defmodule LockScreenQRCodeWeb.HomeLive do
   require Logger
 
   alias LockScreenQRCodeWeb.UrlValidator
+  import LockScreenQRCodeWeb.Components.PhonePreview
 
   @impl true
   def mount(_params, _session, socket) do
     :telemetry.execute([:lock_screen_qr_code, :home_live, :mount], %{status: :start})
     Logger.info("HomeLive mounted")
+
+    # Demo URL for the home page preview
+    socket = assign(socket, demo_url: "https://example.com/demo")
+
     {:ok, socket}
   end
 

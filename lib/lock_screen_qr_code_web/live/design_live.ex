@@ -2,7 +2,8 @@ defmodule LockScreenQRCodeWeb.DesignLive do
   use LockScreenQRCodeWeb, :live_view
   require Logger
   alias LockScreenQRCode.Requests
-  import LockScreenQRCodeWeb.Components.QRCode
+  alias LockScreenQRCode.Generator
+  import LockScreenQRCodeWeb.Components.PhonePreview
 
   @templates [
     %{id: "pop_vibes", name: "Pop Vibes", gradient: "from-pink-400 to-purple-500"},
@@ -15,26 +16,8 @@ defmodule LockScreenQRCodeWeb.DesignLive do
     %{id: "forest_mist", name: "Forest Mist", gradient: "from-emerald-400 to-teal-600"}
   ]
 
-  @dark_templates ["pop_vibes", "ocean_blue", "sunny_side", "monochrome", "neon_glow", "sunset_dream", "forest_mist"]
+  # Define which templates use light theme (all others are dark)
   @light_templates ["clean_white"]
-
-  # Theme colors for different template types
-  @theme_colors %{
-    dark: %{
-      text_primary: "text-white",
-      text_secondary: "text-white/80",
-      text_display: "text-white",
-      qr_code: "white",
-      bottom_line: "bg-white/60"
-    },
-    light: %{
-      text_primary: "text-gray-800",
-      text_secondary: "text-gray-600/80",
-      text_display: "text-gray-800",
-      qr_code: "black",
-      bottom_line: "bg-gray-400/60"
-    }
-  }
 
   @impl true
   def mount(_params, _session, socket) do
@@ -51,14 +34,14 @@ defmodule LockScreenQRCodeWeb.DesignLive do
 
     # Default to the first template if none is selected
     template = socket.assigns[:qr_request].template || List.first(templates).id
-    theme_colors = get_theme_colors(template)
+    theme = if template in @light_templates, do: "light", else: "dark"
 
     # Set qr_preview to nil since we'll use the component directly
     {:ok, assign(socket,
       templates: templates,
       selected_template: template,
       qr_preview: nil,
-      theme_colors: theme_colors
+      theme: theme
     )}
   end
 
@@ -69,13 +52,13 @@ defmodule LockScreenQRCodeWeb.DesignLive do
     # Update the QR request with the selected template
     case Requests.update_qr_request(socket.assigns.qr_request, %{template: template_id}) do
       {:ok, updated_qr_request} ->
-        theme_colors = get_theme_colors(template_id)
+        theme = if template_id in @light_templates, do: "light", else: "dark"
 
         {:noreply,
          socket
          |> assign(:qr_request, updated_qr_request)
          |> assign(:selected_template, template_id)
-         |> assign(:theme_colors, theme_colors)}
+         |> assign(:theme, theme)}
 
       {:error, _changeset} ->
         Logger.error("Failed to update template for QR request: #{socket.assigns.qr_request.id}")
@@ -96,13 +79,4 @@ defmodule LockScreenQRCodeWeb.DesignLive do
   end
 
   # We no longer need the generate_qr_preview function as we're using the QRCode component
-
-  # Determine if a template is light or dark theme
-  defp get_theme_colors(template_id) do
-    cond do
-      template_id in @light_templates -> @theme_colors.light
-      template_id in @dark_templates -> @theme_colors.dark
-      true -> @theme_colors.dark # Default to dark theme
-    end
-  end
 end

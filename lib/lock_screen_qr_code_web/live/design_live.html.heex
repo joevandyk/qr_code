@@ -14,44 +14,19 @@
       <!-- Phone Mockup Preview - Responsive for all screen sizes -->
       <div class="order-2 lg:order-1">
         <div class="flex justify-center">
-          <.device_mockup color="base" class="w-60 lg:w-64">
-            <div class={"w-full h-full bg-gradient-to-br relative overflow-hidden #{@templates |> Enum.find(fn t -> t.id == @selected_template end) |> Map.get(:gradient)}"}>
-              <!-- Time at top (fixed position) -->
-              <div class="absolute top-8 left-0 right-0 text-center">
-                <p class={"#{@theme_colors.text_primary} text-5xl font-light"}>9:41</p>
-                <p class={"#{@theme_colors.text_secondary} text-sm mt-1"}>Monday, October 9</p>
-              </div>
-
-              <!-- QR code container (fixed position with explicit centering) -->
-              <div class="absolute inset-0 flex items-center justify-center">
-                <div class="flex flex-col items-center w-full">
-                  <p class={"#{@theme_colors.text_display} font-medium text-base mb-6 text-center w-full px-4"}><%= @qr_request.name || "Scan to connect" %></p>
-
-                  <!-- QR code with fixed sizing and better containment -->
-                  <div class="flex items-center justify-center bg-transparent w-56 h-56">
-                    <.qr_code
-                      url={@qr_request.url}
-                      class="w-full h-full"
-                      color={@theme_colors.qr_code}
-                      background="transparent"
-                      scale={5}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <!-- Bottom line (fixed position) -->
-              <div class="absolute bottom-8 left-0 right-0 flex justify-center">
-                <div class={"h-1 w-32 #{@theme_colors.bottom_line} rounded-full"}></div>
-              </div>
-            </div>
-          </.device_mockup>
+          <.phone_preview
+            url={@qr_request.url}
+            display_text={@qr_request.name || "Scan to connect"}
+            theme={@theme}
+            template={@selected_template}
+            gradient={@templates |> Enum.find(fn t -> t.id == @selected_template end) |> Map.get(:gradient)}
+          />
         </div>
       </div>
 
       <!-- Template Gallery -->
       <div class="order-1 lg:order-2">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="grid grid-cols-3 gap-4">
           <%= for template <- @templates do %>
             <button
               phx-click="select_template"
@@ -65,39 +40,7 @@
                 end
               ]}
             >
-              <div class={"relative h-64 bg-gradient-to-br #{template.gradient}"}>
-                <!-- Basic QR Code preview with watermark -->
-                <div class="absolute inset-0 flex items-center justify-center p-6">
-                  <div class="relative w-full h-full flex items-center justify-center">
-                    <!-- Basic QR code shape -->
-                    <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center">
-                      <div class="w-24 h-24 grid grid-cols-4 grid-rows-4 gap-1">
-                        <div class="col-span-1 row-span-1 bg-black rounded-sm"></div>
-                        <div class="col-span-1 row-span-1"></div>
-                        <div class="col-span-1 row-span-1"></div>
-                        <div class="col-span-1 row-span-1 bg-black rounded-sm"></div>
-                        <div class="col-span-1 row-span-1"></div>
-                        <div class="col-span-1 row-span-1 bg-black rounded-sm"></div>
-                        <div class="col-span-1 row-span-1 bg-black rounded-sm"></div>
-                        <div class="col-span-1 row-span-1"></div>
-                        <div class="col-span-1 row-span-1"></div>
-                        <div class="col-span-1 row-span-1 bg-black rounded-sm"></div>
-                        <div class="col-span-1 row-span-1"></div>
-                        <div class="col-span-1 row-span-1"></div>
-                        <div class="col-span-1 row-span-1 bg-black rounded-sm"></div>
-                        <div class="col-span-1 row-span-1"></div>
-                        <div class="col-span-1 row-span-1"></div>
-                        <div class="col-span-1 row-span-1 bg-black rounded-sm"></div>
-                      </div>
-                    </div>
-                    <!-- Watermark overlay -->
-                    <div class="absolute inset-0 flex items-center justify-center">
-                      <div class="bg-white/50 px-2 py-1 rounded-full text-xs font-bold text-gray-600 transform rotate-45">
-                        PREVIEW
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div class={"relative h-36 bg-gradient-to-br #{template.gradient}"}>
                 <div class="absolute bottom-0 left-0 right-0 bg-white/90 p-2 text-center">
                   <span class="text-xs font-bold text-gray-900">{template.name}</span>
                 </div>

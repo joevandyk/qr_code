@@ -100,3 +100,38 @@
 [data-phx-session] { display: contents }
 
 /* This file is for your main application CSS */
+
+/* Add theme variables */
+:root {
+  /* Default theme (dark) */
+  --text-primary-color: white;
+  --text-secondary-color: rgba(255, 255, 255, 0.8);
+  --qr-code-color: white;
+  --bottom-line-color: rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="light"] {
+  --text-primary-color: #1f2937; /* gray-800 */
+  --text-secondary-color: rgba(75, 85, 99, 0.8); /* gray-600/80 */
+  --qr-code-color: black;
+  --bottom-line-color: rgba(156, 163, 175, 0.6); /* gray-400/60 */
+}
+
+/* Apply theme variables to elements */
+.time {
+  color: var(--text-primary-color);
+}
+
+.date {
+  color: var(--text-secondary-color);
+}
+
+.display-text {
+  color: var(--text-primary-color);
+}
+
+.bottom-line {
+  background-color: var(--bottom-line-color);
+}
+
+/* Other styles below */
