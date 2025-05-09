@@ -83,4 +83,56 @@ defmodule LockScreenQRCode.Generator do
     # In a real implementation, we would use ImageMagick here to add a watermark
     {:ok, qr_binary}
   end
+
+  @doc """
+  Generates an SVG QR code with custom styling for direct embedding in HTML.
+
+  ## Options
+    * `:qr_color` - Color of the QR code (default: "#ffffff" for white)
+    * `:background_color` - Background color (default: "transparent")
+    * `:scale` - Scale factor for the QR code (default: 6)
+    * `:error_correction` - Error correction level (default: :low)
+
+  ## Returns
+    * `{:ok, svg_string}` - Raw SVG markup as a string
+    * `{:error, reason}` - Error reason
+  """
+  def generate_svg(url, opts \\ []) do
+    # Default options
+    qr_color = Keyword.get(opts, :qr_color, "#ffffff")
+    background_color = Keyword.get(opts, :background_color, "transparent")
+    scale = Keyword.get(opts, :scale, 6)
+    error_correction = Keyword.get(opts, :error_correction, :low)
+
+    # Ensure URL has scheme for QR code library
+    url = if String.starts_with?(url, ["http://", "https://"]), do: url, else: "https://" <> url
+
+    try do
+      # Create SVG settings with custom colors
+      settings = %QRCode.Render.SvgSettings{
+        scale: scale,
+        background_color: background_color,
+        qrcode_color: qr_color
+      }
+
+      # Generate the QR code as SVG
+      result = url
+               |> QRCode.create(error_correction)
+               |> QRCode.render(:svg, settings)
+
+      case result do
+        {:ok, svg_data} ->
+          Logger.debug("SVG QR code generated successfully")
+          {:ok, svg_data}
+
+        {:error, reason} ->
+          Logger.error("Failed to generate SVG QR code: #{reason}")
+          {:error, reason}
+      end
+    rescue
+      e ->
+        Logger.error("SVG QR code generation failed: #{inspect(e)}")
+        {:error, "Failed to generate SVG QR code: #{inspect(e)}"}
+    end
+  end
 end

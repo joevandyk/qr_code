@@ -2,14 +2,39 @@ defmodule LockScreenQRCodeWeb.DesignLive do
   use LockScreenQRCodeWeb, :live_view
   require Logger
   alias LockScreenQRCode.Requests
-  alias LockScreenQRCode.Generator
+  import LockScreenQRCodeWeb.Components.QRCode
 
   @templates [
     %{id: "pop_vibes", name: "Pop Vibes", gradient: "from-pink-400 to-purple-500"},
     %{id: "ocean_blue", name: "Ocean Blue", gradient: "from-teal-400 to-blue-500"},
     %{id: "sunny_side", name: "Sunny Side", gradient: "from-yellow-400 to-orange-500"},
-    %{id: "monochrome", name: "Monochrome", gradient: "from-gray-800 to-gray-900"}
+    %{id: "monochrome", name: "Monochrome", gradient: "from-gray-800 to-gray-900"},
+    %{id: "clean_white", name: "Clean White", gradient: "from-gray-50 to-white"},
+    %{id: "neon_glow", name: "Neon Glow", gradient: "from-green-400 via-blue-500 to-purple-600"},
+    %{id: "sunset_dream", name: "Sunset Dream", gradient: "from-red-400 via-pink-500 to-purple-500"},
+    %{id: "forest_mist", name: "Forest Mist", gradient: "from-emerald-400 to-teal-600"}
   ]
+
+  @dark_templates ["pop_vibes", "ocean_blue", "sunny_side", "monochrome", "neon_glow", "sunset_dream", "forest_mist"]
+  @light_templates ["clean_white"]
+
+  # Theme colors for different template types
+  @theme_colors %{
+    dark: %{
+      text_primary: "text-white",
+      text_secondary: "text-white/80",
+      text_display: "text-white",
+      qr_code: "white",
+      bottom_line: "bg-white/60"
+    },
+    light: %{
+      text_primary: "text-gray-800",
+      text_secondary: "text-gray-600/80",
+      text_display: "text-gray-800",
+      qr_code: "black",
+      bottom_line: "bg-gray-400/60"
+    }
+  }
 
   @impl true
   def mount(_params, _session, socket) do
@@ -26,11 +51,15 @@ defmodule LockScreenQRCodeWeb.DesignLive do
 
     # Default to the first template if none is selected
     template = socket.assigns[:qr_request].template || List.first(templates).id
+    theme_colors = get_theme_colors(template)
 
-    # Generate QR code for preview
-    qr_preview = generate_qr_preview(socket.assigns[:qr_request].url)
-
-    {:ok, assign(socket, templates: templates, selected_template: template, qr_preview: qr_preview)}
+    # Set qr_preview to nil since we'll use the component directly
+    {:ok, assign(socket,
+      templates: templates,
+      selected_template: template,
+      qr_preview: nil,
+      theme_colors: theme_colors
+    )}
   end
 
   @impl true
@@ -40,14 +69,13 @@ defmodule LockScreenQRCodeWeb.DesignLive do
     # Update the QR request with the selected template
     case Requests.update_qr_request(socket.assigns.qr_request, %{template: template_id}) do
       {:ok, updated_qr_request} ->
-        # Generate QR code preview with the new template
-        qr_preview = generate_qr_preview(updated_qr_request.url)
+        theme_colors = get_theme_colors(template_id)
 
         {:noreply,
          socket
          |> assign(:qr_request, updated_qr_request)
          |> assign(:selected_template, template_id)
-         |> assign(:qr_preview, qr_preview)}
+         |> assign(:theme_colors, theme_colors)}
 
       {:error, _changeset} ->
         Logger.error("Failed to update template for QR request: #{socket.assigns.qr_request.id}")
@@ -67,46 +95,14 @@ defmodule LockScreenQRCodeWeb.DesignLive do
     {:noreply, push_navigate(socket, to: ~p"/preview")}
   end
 
-  # Private functions
+  # We no longer need the generate_qr_preview function as we're using the QRCode component
 
-  # Generate a QR code preview as a base64 data URL
-  defp generate_qr_preview(url) do
-    Logger.info("Generating QR code preview for URL: #{url}")
-
-    # Generate QR code using the updated Generator module
-    result = Generator.generate(url, format: :png)
-
-    # Handle the result, using nil for any error case
-    case result do
-      {:ok, qr_binary} when is_binary(qr_binary) ->
-        # Log success
-        byte_size = byte_size(qr_binary)
-        Logger.info("QR code generated successfully: #{byte_size} bytes")
-
-        # Add watermark for preview
-        # The add_preview_watermark function always returns {:ok, binary} for now
-        watermark_result = Generator.add_preview_watermark(qr_binary)
-
-        case watermark_result do
-          {:ok, watermarked_binary} ->
-            # Convert to base64 data URL for display in img tag
-            data_url = "data:image/png;base64," <> Base.encode64(watermarked_binary)
-            Logger.info("QR code data URL generated (length: #{String.length(data_url)})")
-            data_url
-
-          # This case is added for future compatibility if the function is changed
-          _other ->
-            Logger.error("Unexpected watermark result: #{inspect(watermark_result)}")
-            nil
-        end
-
-      _error_or_invalid_binary ->
-        Logger.error("Failed to generate valid QR code binary")
-        nil
+  # Determine if a template is light or dark theme
+  defp get_theme_colors(template_id) do
+    cond do
+      template_id in @light_templates -> @theme_colors.light
+      template_id in @dark_templates -> @theme_colors.dark
+      true -> @theme_colors.dark # Default to dark theme
     end
-  rescue
-    e ->
-      Logger.error("Exception while generating QR code: #{inspect(e)}")
-      nil
   end
 end
