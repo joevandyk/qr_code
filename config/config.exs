@@ -7,19 +7,19 @@
 # General application configuration
 import Config
 
-config :qr_code,
-  ecto_repos: [QrCode.Repo],
+config :lock_screen_qr_code,
+  ecto_repos: [LockScreenQRCode.Repo],
   generators: [timestamp_type: :utc_datetime]
 
 # Configures the endpoint
-config :qr_code, QrCodeWeb.Endpoint,
+config :lock_screen_qr_code, LockScreenQRCodeWeb.Endpoint,
   url: [host: "localhost"],
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
-    formats: [html: QrCodeWeb.ErrorHTML, json: QrCodeWeb.ErrorJSON],
+    formats: [html: LockScreenQRCodeWeb.ErrorHTML, json: LockScreenQRCodeWeb.ErrorJSON],
     layout: false
   ],
-  pubsub_server: QrCode.PubSub,
+  pubsub_server: LockScreenQRCode.PubSub,
   live_view: [signing_salt: "jGIO6pmW"]
 
 # Configures the mailer
@@ -29,12 +29,12 @@ config :qr_code, QrCodeWeb.Endpoint,
 #
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
-config :qr_code, QrCode.Mailer, adapter: Swoosh.Adapters.Local
+config :lock_screen_qr_code, LockScreenQRCode.Mailer, adapter: Swoosh.Adapters.Local
 
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.17.11",
-  qr_code: [
+  lock_screen_qr_code: [
     args:
       ~w(js/app.js --bundle --target=es2022 --outdir=../priv/static/assets/js --external:/fonts/* --external:/images/*),
     cd: Path.expand("../assets", __DIR__),
@@ -44,7 +44,7 @@ config :esbuild,
 # Configure tailwind (the version is required)
 config :tailwind,
   version: "4.0.9",
-  qr_code: [
+  lock_screen_qr_code: [
     args: ~w(
       --input=assets/css/app.css
       --output=priv/static/assets/css/app.css

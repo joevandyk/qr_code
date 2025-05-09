@@ -1,4 +1,4 @@
-# QrCode
+# LockScreenQRCode
 
 To start your Phoenix server:
 

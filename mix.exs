@@ -1,9 +1,9 @@
-defmodule QrCode.MixProject do
+defmodule LockScreenQRCode.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :qr_code,
+      app: :lock_screen_qr_code,
       version: "0.1.0",
       elixir: "~> 1.15",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -22,7 +22,7 @@ defmodule QrCode.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {QrCode.Application, []},
+      mod: {LockScreenQRCode.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end
@@ -66,7 +66,9 @@ defmodule QrCode.MixProject do
       {:wallaby, "~> 0.30", only: :test, runtime: false},
       {:httpoison, "~> 2.0"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
-      {:mock, "~> 0.3.0", only: :test}
+      {:mock, "~> 0.3.0", only: :test},
+      {:rename, "~> 0.1.0", only: :dev}
+
     ]
   end
 
@@ -84,10 +86,10 @@ defmodule QrCode.MixProject do
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test --exclude feature"],
       "test.features": ["ecto.create --quiet", "ecto.migrate --quiet", "test --only feature"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": ["tailwind qr_code", "esbuild qr_code"],
+      "assets.build": ["tailwind lock_screen_qr_code", "esbuild lock_screen_qr_code"],
       "assets.deploy": [
-        "tailwind qr_code --minify",
-        "esbuild qr_code --minify",
+        "tailwind lock_screen_qr_code --minify",
+        "esbuild lock_screen_qr_code --minify",
         "phx.digest"
       ]
     ]

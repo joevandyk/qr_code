@@ -1,4 +1,4 @@
-defmodule QrCode.Repo.Migrations.CreateOrdersTable do
+defmodule LockScreenQRCode.Repo.Migrations.CreateOrdersTable do
   use Ecto.Migration
 
   def change do
