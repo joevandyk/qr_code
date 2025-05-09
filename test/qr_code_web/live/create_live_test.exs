@@ -42,7 +42,7 @@ defmodule QrCodeWeb.CreateLiveTest do
       |> render_change(%{"qr_request" => %{"url" => "invalid-url", "name" => "Test"}})
 
       # Check for error message - should show an error about the URL scheme
-      assert has_element?(view, ".text-red-600", ~r/missing a scheme/)
+      assert has_element?(view, ".text-rose-600", ~r/missing a scheme/)
 
       # Test valid URL format
       view
@@ -50,7 +50,7 @@ defmodule QrCodeWeb.CreateLiveTest do
       |> render_change(%{"qr_request" => %{"url" => "https://example.com", "name" => "Test"}})
 
       # No error message should be present
-      refute has_element?(view, ".text-red-600")
+      refute has_element?(view, ".text-rose-600")
     end
 
     test "redirects to design page and stores session on valid submission", %{conn: conn} do
@@ -85,7 +85,7 @@ defmodule QrCodeWeb.CreateLiveTest do
       # Should still be on the create page
       assert view.module == QrCodeWeb.CreateLive
       # Should show error message
-      assert has_element?(view, ".text-red-600")
+      assert has_element?(view, ".text-rose-600")
     end
   end
 end
