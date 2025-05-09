@@ -29,13 +29,16 @@ defmodule LockScreenQRCode.Storage do
     # In a real implementation, this would upload to S3 or another storage service
     # For now, we'll save to the local filesystem in a temporary directory
     try do
-      # Ensure the temporary directory exists
-      File.mkdir_p!("priv/static/generated")
+      # Get the proper path for the static files
+      base_path = Application.app_dir(:lock_screen_qr_code, "priv/static/generated")
+
+      # Ensure the directory exists
+      File.mkdir_p!(base_path)
 
       # Generate a filename based on the key
       ext = get_file_extension(content_type)
       filename = "#{key}#{ext}"
-      path = "priv/static/generated/#{filename}"
+      path = Path.join(base_path, filename)
 
       # Write the file
       File.write!(path, binary)
@@ -72,8 +75,10 @@ defmodule LockScreenQRCode.Storage do
     # In a real implementation, this would download from S3 or another storage service
     # For now, we'll read from the local filesystem
     try do
+      # Get the proper path for the static files
+      base_path = Application.app_dir(:lock_screen_qr_code, "priv/static/generated")
       ext = get_file_extension(content_type)
-      path = "priv/static/generated/#{key}#{ext}"
+      path = Path.join(base_path, "#{key}#{ext}")
 
       if File.exists?(path) do
         binary = File.read!(path)
@@ -111,8 +116,10 @@ defmodule LockScreenQRCode.Storage do
     # In a real implementation, this would delete from S3 or another storage service
     # For now, we'll delete from the local filesystem
     try do
+      # Get the proper path for the static files
+      base_path = Application.app_dir(:lock_screen_qr_code, "priv/static/generated")
       ext = get_file_extension(content_type)
-      path = "priv/static/generated/#{key}#{ext}"
+      path = Path.join(base_path, "#{key}#{ext}")
 
       if File.exists?(path) do
         File.rm!(path)

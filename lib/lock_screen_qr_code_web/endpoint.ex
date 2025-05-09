@@ -19,7 +19,9 @@ defmodule LockScreenQRCodeWeb.Endpoint do
   plug Plug.Static,
     at: "/generated",
     from: {:lock_screen_qr_code, "priv/static/generated"},
-    gzip: false
+    gzip: false,
+    only: ~w(*.png *.jpg *.jpeg *.gif *.webp),
+    cache_control_for_etags: "public, max-age=86400"
 
   # Serve at "/" the static files from "priv/static" directory.
   #
