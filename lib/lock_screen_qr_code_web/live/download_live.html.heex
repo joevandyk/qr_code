@@ -25,12 +25,12 @@
     <div class="flex flex-col lg:flex-row gap-8 items-center justify-center">
       <!-- QR Code Preview -->
       <div class="flex-shrink-0 flex flex-col items-center">
-        <%= if assigns[:image_url] do %>
+        <%= if assigns[:qr_request] do %>
           <div class="bg-white p-4 rounded-lg shadow-md mb-4">
-            <img src={@image_url} alt="QR Code" class="w-64 h-auto" />
+            <img src={get_image_url(@qr_request)} alt="QR Code" class="w-64 h-auto" />
           </div>
           <a
-            href={@image_url}
+            href={get_image_url(@qr_request)}
             download="lock-screen-qr.png"
             class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl py-3 px-6 shadow-md flex justify-center items-center gap-2 mb-4"
           >
@@ -43,7 +43,7 @@
             phx-click="regenerate"
             class="text-indigo-600 hover:text-indigo-800 text-sm font-medium"
           >
-            Generate a different style
+            Refresh
           </button>
         <% else %>
           <div class="bg-gray-100 p-4 rounded-lg shadow-md w-64 h-64 flex items-center justify-center">

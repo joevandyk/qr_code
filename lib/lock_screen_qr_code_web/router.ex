@@ -22,6 +22,9 @@ defmodule LockScreenQRCodeWeb.Router do
     # Regular controller action to initialize the QR request session
     get "/start", QrRequestController, :start
 
+    # Route to serve QR code images directly
+    get "/qr-images/:id", QRImageController, :show
+
     live_session :lock_screen_qr_code_flow,
       on_mount: {LockScreenQRCodeWeb.QrSessionHook, :ensure_qr_data} do
       live "/create", CreateLive
