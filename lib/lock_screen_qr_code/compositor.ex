@@ -106,12 +106,14 @@ defmodule LockScreenQRCode.Compositor do
   """
   def create_composite_image(qr_binary, template_info, opts) do
     try do
-      # Create temporary files
-      temp_dir = System.tmp_dir!()
+      # Create temporary files with fallback paths
+      temp_dir = get_temp_dir()
       qr_path = Path.join(temp_dir, "qr_code_#{:os.system_time(:millisecond)}.png")
       output_path = Path.join(temp_dir, "output_#{:os.system_time(:millisecond)}.png")
 
       Logger.debug("Writing QR code to temp file: #{qr_path}")
+      # Ensure directory exists
+      File.mkdir_p!(Path.dirname(qr_path))
       # Write QR code to temp file
       File.write!(qr_path, qr_binary)
 
@@ -270,5 +272,23 @@ defmodule LockScreenQRCode.Compositor do
     }
 
     Map.get(colors, color, "#777777") # Default gray if color not found
+  end
+
+  # Get a writable temporary directory with fallback
+  defp get_temp_dir do
+    try do
+      temp_dir = System.tmp_dir!()
+      # Test that we can actually write to it
+      test_file = Path.join(temp_dir, "test_write_#{:os.system_time(:millisecond)}")
+      File.touch!(test_file)
+      File.rm!(test_file)
+      temp_dir
+    rescue
+      _ ->
+        # Fallback to a directory in priv
+        fallback_dir = Path.join(["priv", "tmp"])
+        File.mkdir_p!(fallback_dir)
+        fallback_dir
+    end
   end
 end

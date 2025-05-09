@@ -3,84 +3,138 @@ defmodule LockScreenQRCodeWeb.CreateLive do
   require Logger
   alias LockScreenQRCode.Requests
   alias LockScreenQRCode.QrRequest
-
-  @sample_sites [
-    "https://github.com",
-    "https://elixir-lang.org",
-    "https://hexdocs.pm",
-    "https://phoenixframework.org",
-    "https://developer.mozilla.org",
-    "https://tailwindcss.com",
-    "https://fly.io",
-    "https://example.com"
-  ]
+  alias LockScreenQRCodeWeb.Layouts
 
   @impl true
   def mount(_params, _session, socket) do
     # Create a changeset and convert to form
     changeset = QrRequest.changeset(socket.assigns.qr_request, %{})
 
-    {:ok, assign(socket, form: to_form(changeset))}
+    {:ok, assign(socket, form: to_form(changeset), show_errors: false)}
   end
 
   @impl true
   def handle_event("validate", %{"qr_request" => params}, socket) do
-    # Create a changeset for validation
     changeset =
       socket.assigns.qr_request
       |> QrRequest.changeset(params)
-      |> Map.put(:action, :validate)
+
+    # Only add action (which triggers error display) if we're showing errors
+    changeset = if socket.assigns.show_errors do
+      Map.put(changeset, :action, :validate)
+    else
+      changeset
+    end
 
     {:noreply, assign(socket, :form, to_form(changeset))}
   end
 
   @impl true
+  def handle_event("field_blur", _params, socket) do
+    {:noreply, assign(socket, :show_errors, true)}
+  end
+
+  @impl true
   def handle_event("save", %{"qr_request" => params}, socket) do
-    # Create or update QR request
-    case create_or_update_qr_request(socket, params) do
-      {:ok, qr_request} ->
-        # Store the QR request in assigns and navigate to design page
-        {:noreply,
-         socket
-         |> clear_flash()
-         |> assign(:qr_request, qr_request)
-         |> push_navigate(to: ~p"/design")}
+    # First validate the input
+    changeset =
+      socket.assigns.qr_request
+      |> QrRequest.changeset(params)
+      |> Map.put(:action, :validate)
 
-      {:error, changeset} ->
-        error_message = get_error_message(changeset)
-        Logger.error("QR request error: #{error_message}")
+    if changeset.valid? do
+      updated_request = Requests.update_qr_request(socket.assigns.qr_request, params)
 
-        {:noreply,
-         socket
-         |> assign(:form, to_form(changeset))}
+      {:noreply,
+       socket
+       |> assign(:qr_request, updated_request)
+       |> push_navigate(to: ~p"/design")}
+    else
+      # Show errors and stay on the form page
+      {:noreply, assign(socket, form: to_form(changeset), show_errors: true)}
     end
   end
 
-  # Create a new QR request or update existing one
-  defp create_or_update_qr_request(socket, params) do
-    # Print the current qr_request for debugging
+  @impl true
+  def render(assigns) do
+    ~H"""
+    <Layouts.app flash={@flash}>
+      <div class="w-full max-w-md bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-8 relative z-10">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-2">Add your link</h1>
+        <p class="text-center text-gray-600 mb-8">
+          Enter the URL you want people to access when they scan your QR code
+        </p>
 
-    case socket.assigns.qr_request do
-      %QrRequest{id: id} = qr_request when is_integer(id) ->
-        # Log the current URL in the DB for comparison
+        <.form for={@form} phx-submit="save" phx-change="validate" class="space-y-6">
+          <div class="space-y-2">
+            <label for={@form[:url].id} class="block text-sm font-medium text-gray-800">
+              Website or profile URL
+            </label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 text-gray-500"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5zm-5 5a2 2 0 012.828 0 1 1 0 101.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5a2 2 0 11-2.828-2.828l3-3z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+              <input
+                type="url"
+                id={@form[:url].id}
+                name={@form[:url].name}
+                value={@form[:url].value}
+                placeholder="https://www.example.com"
+                phx-blur="field_blur"
+                class="block w-full pl-10 pr-3 py-3 text-gray-800 bg-white border-2 border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 cursor-text"
+                required
+              />
+            </div>
+            <div class="mt-1">
+              <.error :for={{msg, _opts} <- @form[:url].errors}>
+                {msg}
+              </.error>
+            </div>
+          </div>
 
-        # Use the standard update approach
-        Requests.update_qr_request(qr_request, params)
+          <div class="space-y-2">
+            <label for={@form[:name].id} class="block text-sm font-medium text-gray-800">
+              Text above QR code (optional)
+            </label>
+            <input
+              type="text"
+              id={@form[:name].id}
+              name={@form[:name].name}
+              value={@form[:name].value}
+              placeholder="Text to display above your QR code"
+              phx-blur="field_blur"
+              class="block w-full px-4 py-3 text-gray-800 bg-white border-2 border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 cursor-text"
+            />
+          </div>
 
-      _ ->
-        # Create new request with token
-        Requests.create_qr_request(params)
-    end
-  end
-
-  # Extract a user-friendly error message from a changeset
-  defp get_error_message(changeset) do
-    Ecto.Changeset.traverse_errors(changeset, fn {msg, opts} ->
-      Regex.replace(~r"%{(\w+)}", msg, fn _, key ->
-        opts |> Keyword.get(String.to_existing_atom(key), key) |> to_string()
-      end)
-    end)
-    |> Enum.map(fn {k, v} -> "#{k}: #{Enum.join(v, ", ")}" end)
-    |> Enum.join("; ")
+          <div class="mt-6 flex flex-col sm:flex-row justify-between gap-4 sm:gap-3">
+            <.link
+              navigate="/"
+              class="w-full sm:w-auto bg-white text-indigo-600 border border-indigo-200 hover:bg-indigo-50 font-medium rounded-full py-3 px-6 shadow-sm flex justify-center order-2 sm:order-1 cursor-pointer"
+            >
+              &larr; Back
+            </.link>
+            <button
+              type="submit"
+              class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-full py-3 px-8 shadow-md flex justify-center order-1 sm:order-2 cursor-pointer"
+            >
+              Continue &rarr;
+            </button>
+          </div>
+        </.form>
+      </div>
+    </Layouts.app>
+    """
   end
 end

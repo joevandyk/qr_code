@@ -30,10 +30,9 @@ defmodule LockScreenQRCodeWeb.PreviewLive do
               <h2 class="text-2xl font-bold text-gray-800 mb-4">Your QR Code is Ready!</h2>
 
               <div class="mb-6 text-gray-600">
-                <p class="mb-3">This QR code will direct anyone who scans it to:</p>
-                <div class="bg-white p-3 rounded-lg border border-gray-200 mb-3 break-all">
-                  <p class="font-medium text-gray-800"><%= @qr_request.url %></p>
-                </div>
+                <p class="mb-3">This QR code will direct anyone who scans it to
+                <a class="font-medium text-gray-800" href={@qr_request.url} target="_blank"><%= @qr_request.url %></a>
+                </p>
                 <p>The code has been styled using the <span class="font-medium"><%= String.capitalize(String.replace(@qr_request.template, "_", " ")) %></span> template.</p>
               </div>
 
