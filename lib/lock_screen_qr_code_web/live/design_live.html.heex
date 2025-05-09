@@ -23,7 +23,11 @@
               </div>
 
               <!-- QR Code centered -->
-              <div class="absolute inset-0 flex items-center justify-center">
+              <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <!-- Display name above QR code -->
+                <div class="px-6 mb-4 text-center">
+                  <p class="text-white font-medium text-base"><%= @qr_request.name || "Scan to connect" %></p>
+                </div>
                 <div class="bg-white rounded-lg shadow-lg p-4 w-40 h-40 flex items-center justify-center">
                   <!-- Either show the actual QR code or a placeholder -->
                   <%= if @qr_preview do %>
@@ -120,7 +124,7 @@
       </div>
     </div>
 
-    <div class="mt-10 flex flex-col sm:flex-row justify-between space-y-3 sm:space-y-0 sm:space-x-3">
+    <div class="mt-10 flex flex-col sm:flex-row justify-between gap-4 sm:gap-3">
       <button
         phx-click="back"
         class="w-full sm:w-auto bg-white text-indigo-600 border border-indigo-200 hover:bg-indigo-50 font-medium rounded-full py-3 px-6 shadow-sm flex justify-center order-2 sm:order-1"

@@ -45,19 +45,19 @@
 
       <div class="space-y-2">
         <label for={@form[:name].id} class="block text-sm font-medium text-gray-800">
-          Display name (optional)
+          Text above QR code (optional)
         </label>
         <input
           type="text"
           id={@form[:name].id}
           name={@form[:name].name}
           value={@form[:name].value}
-          placeholder="How you want your link to appear"
+          placeholder="Text to display above your QR code"
           class="block w-full px-4 py-3 text-gray-800 bg-white border-2 border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
         />
       </div>
 
-      <div class="mt-6 flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-3">
+      <div class="mt-6 flex flex-col sm:flex-row justify-between gap-4 sm:gap-3">
         <.link
           navigate="/"
           class="w-full sm:w-auto bg-white text-indigo-600 border border-indigo-200 hover:bg-indigo-50 font-medium rounded-full py-3 px-6 shadow-sm flex justify-center order-2 sm:order-1"
