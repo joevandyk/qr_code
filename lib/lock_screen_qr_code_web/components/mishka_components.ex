@@ -41,7 +41,9 @@ defmodule LockScreenQRCodeWeb.Components.MishkaComponents do
 
       import LockScreenQRCodeWeb.Components.Carousel, only: [carousel: 1]
       import LockScreenQRCodeWeb.Components.Chat, only: [chat: 1, chat_section: 1]
-      import LockScreenQRCodeWeb.Components.CheckboxCard, only: [checkbox_card: 1, checkbox_card_check: 3]
+
+      import LockScreenQRCodeWeb.Components.CheckboxCard,
+        only: [checkbox_card: 1, checkbox_card_check: 3]
 
       import LockScreenQRCodeWeb.Components.CheckboxField,
         only: [checkbox_field: 1, group_checkbox: 1, checkbox_check: 3]
@@ -75,7 +77,10 @@ defmodule LockScreenQRCodeWeb.Components.MishkaComponents do
       import LockScreenQRCodeWeb.Components.Jumbotron, only: [jumbotron: 1]
       import LockScreenQRCodeWeb.Components.Keyboard, only: [keyboard: 1]
       import LockScreenQRCodeWeb.Components.Layout, only: [flex: 1, grid: 1]
-      import LockScreenQRCodeWeb.Components.List, only: [list: 1, li: 1, ul: 1, ol: 1, list_group: 1]
+
+      import LockScreenQRCodeWeb.Components.List,
+        only: [list: 1, li: 1, ul: 1, ol: 1, list_group: 1]
+
       import LockScreenQRCodeWeb.Components.MegaMenu, only: [mega_menu: 1]
       import LockScreenQRCodeWeb.Components.Menu, only: [menu: 1]
 
@@ -92,7 +97,9 @@ defmodule LockScreenQRCodeWeb.Components.MishkaComponents do
           hide: 2
         ]
 
-      import LockScreenQRCodeWeb.Components.NativeSelect, only: [native_select: 1, select_option_group: 1]
+      import LockScreenQRCodeWeb.Components.NativeSelect,
+        only: [native_select: 1, select_option_group: 1]
+
       import LockScreenQRCodeWeb.Components.Navbar, only: [navbar: 1, header: 1]
       import LockScreenQRCodeWeb.Components.NumberField, only: [number_field: 1]
       import LockScreenQRCodeWeb.Components.Overlay, only: [overlay: 1]

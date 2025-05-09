@@ -32,9 +32,9 @@ defmodule LockScreenQRCodeWeb.NavigationTest do
       # Click on the Start button which will redirect to a regular controller
       # then to the create page
       assert {:error, {:live_redirect, %{to: "/start", kind: :push}}} =
-        home_view
-        |> element(~s{div.mt-10 a[href="/start"]})
-        |> render_click()
+               home_view
+               |> element(~s{div.mt-10 a[href="/start"]})
+               |> render_click()
 
       # Follow the redirects through the controller to the create page
       conn = get(conn, "/start")

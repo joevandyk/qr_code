@@ -14,7 +14,8 @@ defmodule LockScreenQRCodeWeb.CreateLiveTest do
 
     test "renders form with URL and name fields when session exists", %{conn: conn} do
       # Create a test session with a QR request token
-      {:ok, qr_request} = LockScreenQRCode.Requests.create_qr_request(%{url: "https://example.com", name: ""})
+      {:ok, qr_request} =
+        LockScreenQRCode.Requests.create_qr_request(%{url: "https://example.com", name: ""})
 
       conn =
         conn
@@ -31,7 +32,9 @@ defmodule LockScreenQRCodeWeb.CreateLiveTest do
 
     test "validates URL format during input", %{conn: conn} do
       # Create a QR request and add it to the session
-      {:ok, qr_request} = LockScreenQRCode.Requests.create_qr_request(%{url: "https://example.com", name: ""})
+      {:ok, qr_request} =
+        LockScreenQRCode.Requests.create_qr_request(%{url: "https://example.com", name: ""})
+
       conn = init_test_session(conn, %{"qr_request_token" => qr_request.token})
 
       {:ok, view, _html} = live(conn, "/create")
@@ -55,7 +58,9 @@ defmodule LockScreenQRCodeWeb.CreateLiveTest do
 
     test "redirects to design page and stores session on valid submission", %{conn: conn} do
       # Create a QR request and add it to the session
-      {:ok, qr_request} = LockScreenQRCode.Requests.create_qr_request(%{url: "https://example.com", name: ""})
+      {:ok, qr_request} =
+        LockScreenQRCode.Requests.create_qr_request(%{url: "https://example.com", name: ""})
+
       conn = init_test_session(conn, %{"qr_request_token" => qr_request.token})
 
       {:ok, view, _html} = live(conn, "/create")
@@ -64,7 +69,9 @@ defmodule LockScreenQRCodeWeb.CreateLiveTest do
       {:error, {:live_redirect, %{to: to}}} =
         view
         |> element("form")
-        |> render_submit(%{"qr_request" => %{"url" => "https://example.com", "name" => "Test Site"}})
+        |> render_submit(%{
+          "qr_request" => %{"url" => "https://example.com", "name" => "Test Site"}
+        })
 
       # Should redirect to design page with no parameters
       assert to == "/design"
@@ -72,7 +79,9 @@ defmodule LockScreenQRCodeWeb.CreateLiveTest do
 
     test "shows error and stays on page with invalid submission", %{conn: conn} do
       # Create a QR request and add it to the session
-      {:ok, qr_request} = LockScreenQRCode.Requests.create_qr_request(%{url: "https://example.com", name: ""})
+      {:ok, qr_request} =
+        LockScreenQRCode.Requests.create_qr_request(%{url: "https://example.com", name: ""})
+
       conn = init_test_session(conn, %{"qr_request_token" => qr_request.token})
 
       {:ok, view, _html} = live(conn, "/create")

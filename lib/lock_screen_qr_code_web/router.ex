@@ -22,7 +22,8 @@ defmodule LockScreenQRCodeWeb.Router do
     # Regular controller action to initialize the QR request session
     get "/start", QrRequestController, :start
 
-    live_session :lock_screen_qr_code_flow, on_mount: {LockScreenQRCodeWeb.QrSessionHook, :ensure_qr_data} do
+    live_session :lock_screen_qr_code_flow,
+      on_mount: {LockScreenQRCodeWeb.QrSessionHook, :ensure_qr_data} do
       live "/create", CreateLive
       live "/design", DesignLive
       live "/preview", PreviewLive

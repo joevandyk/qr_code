@@ -63,12 +63,12 @@ defmodule LockScreenQRCode.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
       {:mishka_chelekom, "~> 0.0.5"},
+      {:qr_code, "~> 3.2.0"},
       {:wallaby, "~> 0.30", only: :test, runtime: false},
       {:httpoison, "~> 2.0"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:mock, "~> 0.3.0", only: :test},
       {:rename, "~> 0.1.0", only: :dev}
-
     ]
   end
 

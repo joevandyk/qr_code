@@ -12,6 +12,7 @@ defmodule LockScreenQRCodeWeb.QrRequestControllerTest do
     assert is_binary(token)
 
     # Verify the token points to a real record
-    assert %LockScreenQRCode.QrRequest{} = LockScreenQRCode.Requests.get_qr_request_by_token(token)
+    assert %LockScreenQRCode.QrRequest{} =
+             LockScreenQRCode.Requests.get_qr_request_by_token(token)
   end
 end

@@ -52,5 +52,84 @@ defmodule LockScreenQRCodeWeb.DesignLiveTest do
       # Should redirect to /start
       assert to == "/start"
     end
+
+    test "displays template options", %{conn: conn} do
+      # Create a QR request
+      {:ok, qr_request} =
+        Requests.create_qr_request(%{
+          url: "https://example.com",
+          name: "Test Site"
+        })
+
+      # Set up test conn with session data
+      {:ok, view, _html} =
+        conn
+        |> init_test_session(%{"qr_request_token" => qr_request.token})
+        |> live("/design")
+
+      # Verify template options are displayed
+      assert has_element?(view, "button", "Pop Vibes")
+      assert has_element?(view, "button", "Ocean Blue")
+      assert has_element?(view, "button", "Sunny Side")
+      assert has_element?(view, "button", "Monochrome")
+    end
+
+    test "selects and saves template choice", %{conn: conn} do
+      # Create a QR request
+      {:ok, qr_request} =
+        Requests.create_qr_request(%{
+          url: "https://example.com",
+          name: "Test Site"
+        })
+
+      # Set up test conn with session data
+      {:ok, view, _html} =
+        conn
+        |> init_test_session(%{"qr_request_token" => qr_request.token})
+        |> live("/design")
+
+      # Click on the Ocean Blue template
+      view |> element("button", "Ocean Blue") |> render_click()
+
+      # Verify the template was selected (highlighted)
+      html = render(view)
+      assert html =~ "Ocean Blue"
+
+      # Check the database was updated
+      updated_qr_request = Requests.get_qr_request(qr_request.id)
+      assert updated_qr_request.template == "ocean_blue"
+    end
+
+    test "navigation buttons work correctly", %{conn: conn} do
+      # Create a QR request
+      {:ok, qr_request} =
+        Requests.create_qr_request(%{
+          url: "https://example.com"
+        })
+
+      # Set up test conn with session data
+      {:ok, view, _html} =
+        conn
+        |> init_test_session(%{"qr_request_token" => qr_request.token})
+        |> live("/design")
+
+      # Test back button
+      assert {:error, {:live_redirect, %{to: "/create"}}} =
+               view
+               |> element("button", "Back")
+               |> render_click()
+
+      # Set up view again for continue button test
+      {:ok, view, _html} =
+        conn
+        |> init_test_session(%{"qr_request_token" => qr_request.token})
+        |> live("/design")
+
+      # Test continue button
+      assert {:error, {:live_redirect, %{to: "/preview"}}} =
+               view
+               |> element("button", "Continue")
+               |> render_click()
+    end
   end
 end

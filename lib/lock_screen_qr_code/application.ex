@@ -10,7 +10,8 @@ defmodule LockScreenQRCode.Application do
     children = [
       LockScreenQRCodeWeb.Telemetry,
       LockScreenQRCode.Repo,
-      {DNSCluster, query: Application.get_env(:lock_screen_qr_code, :dns_cluster_query) || :ignore},
+      {DNSCluster,
+       query: Application.get_env(:lock_screen_qr_code, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: LockScreenQRCode.PubSub},
       # Start a worker by calling: LockScreenQRCode.Worker.start_link(arg)
       # {LockScreenQRCode.Worker, arg},
