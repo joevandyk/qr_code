@@ -23,8 +23,8 @@ defmodule QrCodeWeb.CreateLiveTest do
       {:ok, view, _html} = live(conn, "/create")
 
       assert has_element?(view, "form[phx-submit=save]")
-      assert has_element?(view, "input[name=url]")
-      assert has_element?(view, "input[name=name]")
+      assert has_element?(view, "input[name='qr_request[url]']")
+      assert has_element?(view, "input[name='qr_request[name]']")
       assert has_element?(view, "button[type=submit]", "Continue →")
       assert has_element?(view, "a", "← Back")
     end
@@ -39,18 +39,18 @@ defmodule QrCodeWeb.CreateLiveTest do
       # Test invalid URL
       view
       |> element("form")
-      |> render_change(%{url: "invalid-url", name: "Test"})
+      |> render_change(%{"qr_request" => %{"url" => "invalid-url", "name" => "Test"}})
 
       # Check for error message - should show an error about the URL scheme
-      assert has_element?(view, "p#url-error", ~r/missing a scheme/)
+      assert has_element?(view, ".text-red-600", ~r/missing a scheme/)
 
       # Test valid URL format
       view
       |> element("form")
-      |> render_change(%{url: "https://example.com", name: "Test"})
+      |> render_change(%{"qr_request" => %{"url" => "https://example.com", "name" => "Test"}})
 
       # No error message should be present
-      refute has_element?(view, "p#url-error")
+      refute has_element?(view, ".text-red-600")
     end
 
     test "redirects to design page and stores session on valid submission", %{conn: conn} do
@@ -64,7 +64,7 @@ defmodule QrCodeWeb.CreateLiveTest do
       {:error, {:live_redirect, %{to: to}}} =
         view
         |> element("form")
-        |> render_submit(%{url: "https://example.com", name: "Test Site"})
+        |> render_submit(%{"qr_request" => %{"url" => "https://example.com", "name" => "Test Site"}})
 
       # Should redirect to design page with no parameters
       assert to == "/design"
@@ -80,12 +80,12 @@ defmodule QrCodeWeb.CreateLiveTest do
       # Submit invalid URL
       view
       |> element("form")
-      |> render_submit(%{url: "invalid", name: "Test"})
+      |> render_submit(%{"qr_request" => %{"url" => "invalid", "name" => "Test"}})
 
       # Should still be on the create page
       assert view.module == QrCodeWeb.CreateLive
       # Should show error message
-      assert has_element?(view, "p#url-error")
+      assert has_element?(view, ".text-red-600")
     end
   end
 end

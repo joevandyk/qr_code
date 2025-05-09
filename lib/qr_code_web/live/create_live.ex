@@ -79,17 +79,12 @@ defmodule QrCodeWeb.CreateLive do
   # Create a new QR request or update existing one
   defp create_or_update_qr_request(socket, params) do
     # Print the current qr_request for debugging
-    IO.inspect(socket.assigns.qr_request, label: "CURRENT QR REQUEST")
-    IO.puts("NEW PARAMS: #{inspect(params)}")
 
     case socket.assigns.qr_request do
       %QrRequest{id: id} = qr_request when is_integer(id) ->
         # Log the current URL in the DB for comparison
-        IO.puts("Current URL in database: #{qr_request.url}")
-        IO.puts("URL from form submission: #{params["url"]}")
 
         # Use the standard update approach
-        IO.inspect(params, label: "UPDATE PARAMS")
         Requests.update_qr_request(qr_request, params)
 
       _ ->

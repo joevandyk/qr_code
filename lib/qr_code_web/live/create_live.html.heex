@@ -16,8 +16,8 @@
     </p>
 
     <.form for={@form} phx-submit="save" phx-change="validate" class="space-y-6">
-      <div>
-        <label for={@form[:url].id} class="block text-sm font-medium text-gray-800 mb-1">
+      <div class="space-y-2">
+        <label for={@form[:url].id} class="block text-sm font-medium text-gray-800">
           Website or profile URL
         </label>
         <div class="relative">
@@ -40,18 +40,22 @@
             id={@form[:url].id}
             name={@form[:url].name}
             value={@form[:url].value}
-            class="block w-full pl-10 pr-4 py-3 text-gray-900 bg-white border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm"
             placeholder="https://www.example.com"
+            class="block w-full pl-10 pr-3 py-3 text-gray-800 bg-white border-2 border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             required
           />
         </div>
         <div class="mt-1">
-          <.error :for={msg <- @form[:url].errors}><span class="text-sm text-red-600">{msg}</span></.error>
+          <%= for error <- @form[:url].errors do %>
+            <div class="text-sm text-red-600">
+              <%= if is_tuple(error), do: elem(error, 0), else: error %>
+            </div>
+          <% end %>
         </div>
       </div>
 
-      <div>
-        <label for={@form[:name].id} class="block text-sm font-medium text-gray-800 mb-1">
+      <div class="space-y-2">
+        <label for={@form[:name].id} class="block text-sm font-medium text-gray-800">
           Display name (optional)
         </label>
         <input
@@ -59,8 +63,8 @@
           id={@form[:name].id}
           name={@form[:name].name}
           value={@form[:name].value}
-          class="block w-full px-4 py-3 text-gray-900 bg-white border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm"
           placeholder="How you want your link to appear"
+          class="block w-full px-4 py-3 text-gray-800 bg-white border-2 border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
         />
       </div>
 
