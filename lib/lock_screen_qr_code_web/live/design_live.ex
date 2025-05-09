@@ -13,7 +13,11 @@ defmodule LockScreenQRCodeWeb.DesignLive do
     %{id: "clean_white", name: "Clean White", gradient: "from-gray-50 to-white"},
     %{id: "neon_glow", name: "Neon Glow", gradient: "from-green-400 via-blue-500 to-purple-600"},
     %{id: "sunset_dream", name: "Sunset Dream", gradient: "from-red-400 via-pink-500 to-purple-500"},
-    %{id: "forest_mist", name: "Forest Mist", gradient: "from-emerald-400 to-teal-600"}
+    %{id: "forest_mist", name: "Forest Mist", gradient: "from-emerald-400 to-teal-600"},
+    %{id: "midnight_sky", name: "Midnight Sky", gradient: "from-indigo-900 to-blue-900"},
+    %{id: "amber_gold", name: "Amber Gold", gradient: "from-yellow-500 to-amber-700"},
+    %{id: "rose_petal", name: "Rose Petal", gradient: "from-rose-400 to-pink-600"},
+    %{id: "lime_fresh", name: "Lime Fresh", gradient: "from-lime-400 to-green-600"}
   ]
 
   # Define which templates use light theme (all others are dark)
