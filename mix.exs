@@ -60,7 +60,8 @@ defmodule QrCode.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
       {:mishka_chelekom, "~> 0.0.5"},
-      {:wallaby, "~> 0.30", only: :test}
+      {:wallaby, "~> 0.30", only: :test},
+      {:httpoison, "~> 2.0"}
     ]
   end
 

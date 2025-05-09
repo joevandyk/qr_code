@@ -24,11 +24,13 @@ defmodule QrCodeWeb.Router do
   scope "/mockup", QrCodeWeb do
     pipe_through :browser
 
-    get "/step1", MockupController, :step1
-    get "/step2", MockupController, :step2
-    get "/step3", MockupController, :step3
-    get "/step4", MockupController, :step4
-    get "/step5", MockupController, :step5
+    get "/home", MockupController, :home
+    get "/create", MockupController, :create
+    get "/design", MockupController, :design
+    get "/preview", MockupController, :preview
+    get "/checkout", MockupController, :checkout
+    get "/download", MockupController, :download
+    get "/about", MockupController, :about
   end
 
   # Other scopes may use custom stacks.

@@ -1,0 +1,89 @@
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 py-12 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center relative overflow-hidden">
+  <!-- Decorative background elements -->
+  <div class="absolute top-0 left-0 w-64 h-64 bg-yellow-400 rounded-full opacity-70 blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+  <div class="absolute bottom-0 right-0 w-96 h-96 bg-teal-400 rounded-full opacity-70 blur-3xl translate-x-1/4 translate-y-1/4"></div>
+  <div class="absolute top-1/2 right-0 w-80 h-80 bg-purple-400 rounded-full opacity-60 blur-3xl translate-x-1/3"></div>
+  <div class="absolute bottom-0 left-1/4 w-72 h-72 bg-coral-400 rounded-full opacity-60 blur-3xl"></div>
+
+  <div class="w-full max-w-3xl bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-8 relative z-10">
+    <h1 class="text-3xl font-bold text-center text-gray-800 mb-2">Looking good!</h1>
+    <p class="text-center text-gray-600 mb-8">Preview your QR lock screen before completing your order</p>
+
+    <div class="flex flex-col md:flex-row gap-10 items-center">
+      <!-- Phone Preview -->
+      <div class="md:w-1/2 relative">
+        <div class="relative mx-auto w-72 h-[580px] bg-black rounded-[40px] shadow-2xl overflow-hidden border-8 border-black">
+          <!-- Status Bar -->
+          <div class="absolute top-0 inset-x-0 h-6 bg-black flex justify-between items-center px-6 z-20">
+            <span class="text-white text-xs">9:41</span>
+            <div class="flex space-x-1">
+              <span class="text-white text-xs">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </span>
+              <span class="text-white text-xs">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              </span>
+              <span class="text-white text-xs">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </span>
+            </div>
+          </div>
+
+          <!-- Lock Screen Content (Pink Template) -->
+          <div class="h-full relative bg-gradient-to-br from-pink-400 to-purple-500 flex flex-col justify-between pb-12">
+            <div class="pt-12 px-4 text-center">
+              <p class="text-white/80 text-lg font-light">Friday, May 12</p>
+              <p class="text-white font-semibold text-4xl">09:41</p>
+            </div>
+
+            <div class="flex flex-col items-center justify-center px-8 py-4 mb-12">
+              <div class="bg-white/90 backdrop-blur-sm p-4 rounded-xl shadow-lg mb-3">
+                <img src="https://placehold.co/200x200/ffffff/333333/png?text=QR" alt="QR Code" class="w-full h-auto" />
+              </div>
+              <p class="text-white font-medium text-sm">Scan to connect with me</p>
+              <p class="text-white/80 text-xs">yourwebsite.com</p>
+            </div>
+
+            <!-- Bottom Swipe Indicator -->
+            <div class="absolute bottom-3 left-0 right-0 flex justify-center">
+              <div class="h-1 w-32 bg-white/40 rounded-full"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Panel -->
+      <div class="md:w-1/2">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Your QR Lock Screen</h2>
+
+        <div class="space-y-4">
+          <div class="p-4 bg-gray-50 rounded-lg">
+            <p class="text-sm font-medium text-gray-500">Linked to</p>
+            <p class="text-indigo-600 font-semibold">https://yourwebsite.com</p>
+          </div>
+
+          <div class="p-4 bg-gray-50 rounded-lg">
+            <p class="text-sm font-medium text-gray-500">Template</p>
+            <p class="font-semibold text-gray-800">Pop Vibes<span class="ml-2 text-xs inline-flex items-center px-2.5 py-0.5 rounded-full bg-pink-100 text-pink-800">Popular</span></p>
+          </div>
+
+          <div class="p-4 bg-gray-50 rounded-lg">
+            <p class="text-sm font-medium text-gray-500">Resolution</p>
+            <p class="font-semibold text-gray-800">High Quality (1170 × 2532px)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-10 flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-3">
+      <.link href={~p"/mockup/design"} class="w-full sm:w-auto bg-white text-indigo-600 border border-indigo-200 hover:bg-indigo-50 font-medium rounded-full py-3 px-6 shadow-sm flex justify-center order-2 sm:order-1">&larr; Back</.link>
+      <.link href={~p"/mockup/checkout"} class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-full py-3 px-8 shadow-md flex justify-center order-1 sm:order-2">Continue to checkout &rarr;</.link>
+    </div>
+  </div>
+</div>
