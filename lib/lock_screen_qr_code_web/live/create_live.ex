@@ -17,26 +17,6 @@ defmodule LockScreenQRCodeWeb.CreateLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    :telemetry.execute([:lock_screen_qr_code, :create_live, :mount], %{status: :start})
-    Logger.info("CreateLive mounted")
-
-    # Check if there's already a QR request loaded by the hook
-    socket =
-      if socket.assigns[:qr_request] do
-        Logger.info("Using existing QR request with URL: #{socket.assigns.qr_request.url}")
-        socket
-      else
-        # The hook should have loaded the QR request from the session token
-        # If we get here, something went wrong with the hook or session
-        Logger.warning("No QR request found via hook - should not happen")
-        random_url = Enum.random(@sample_sites)
-        # We intentionally don't generate a token here - that's the controller's job
-        assign(socket, :qr_request, %QrRequest{
-          url: random_url,
-          name: ""
-        })
-      end
-
     # Create a changeset and convert to form
     changeset = QrRequest.changeset(socket.assigns.qr_request, %{})
 
